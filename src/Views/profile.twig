@@ -1,0 +1,38 @@
+{% extends 'base.twig' %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' with {
+        'profileLink': profileLink,
+        'isConnected': isConnected
+    } %}
+    <main id="profile" role="main" class="container">
+        <div class="jumbotron shadow bg-white rounded">
+            <div class="">
+                {{ flashMsg|raw }}
+                {% if imagesList %}
+                    <h1>My uploads</h1>
+                    <div class="links">
+                        {% for image in imagesList %}
+                            <div class="badge badge-info">{{ image.img_id }}</div>
+                            <a href="/si/{{ image.img_slug }}">{{ image.img_slug }}</a> ||
+                            size {{ image.img_size }} ||
+                            post date {{ image.img_date }}<br>
+                        {% endfor %}
+                    </div>
+                    <div class="paginator">
+                        {{ pagination|raw }}
+                    </div>
+                {% else %}
+                    <h2>No uploads yet.</h2>
+                    <p>
+                        Upload your first picture <a href="/">Here</a> !
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

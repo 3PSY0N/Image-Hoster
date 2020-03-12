@@ -1,0 +1,6 @@
+.idea
+_assetsVendor
+prepros.config
+/vendor
+/uploads
+devAssets
