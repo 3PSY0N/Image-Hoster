@@ -3,28 +3,25 @@
 namespace App\Api;
 
 use App\Handlers\UserHandler;
-use App\Models\ImgModel;
 use App\Handlers\ImgHandler;
-use App\Models\UserModel;
 
-class ImageApi extends ImgHandler
+class ImageApi
 {
+    private $imgHandler;
+    private $userHandler;
+
+    public function __construct()
+    {
+        $this->imgHandler  = new ImgHandler();
+        $this->userHandler = new UserHandler();
+    }
+
     /**
      * @throws \Exception
      */
     public function postImage()
     {
-        $hmac  = hash('ripemd160', 'test@test.com');
-        $hmac2 = hash('ripemd160', date('r', time()));
-
-        $apiKey = [
-            'url' => '69e6130b6badf9fb58f8e835bdafae7c44ca68fa'
-        ];
-
-        $tokenKey = '$argon2id$v=19$m=65536,t=4,p=1$V0lxWmNmTmZOTkhKOEJrbQ$DvyGZYBBDDqvg7zkIO6G1YKWLznciGAb5Uej6/I2lNE';
-
-        if (isset($_POST)) {
-            $imgModel    = new ImgModel();
+        if (isset($_POST['upload']) && $_POST['upload'] === 'api') {
             $userHandler = new UserHandler();
 
             $publicKey  = $_POST['publicKey'];
@@ -32,37 +29,51 @@ class ImageApi extends ImgHandler
             $userData   = $userHandler->getUserByApiKey($publicKey);
 
             if ($userData && $_POST['publicKey'] === $userData->api_public && password_verify($privateKey, $userData->api_private)) {
+                $userId          = $userData->usr_id;
                 $file            = $_FILES['externalTool'];
                 $fileName        = $file['name'];
                 $fileTmpName     = $file['tmp_name'];
                 $fileSize        = $file['size'];
                 $fileError       = $file['error'];
-                $fileNameExt     = $this->getFileExt($fileName);
-                $fileNameSlug    = $this->tokenizer();
-                $deleteToken     = $this->tokenizer(20);
-                $fileNameNewExt  = $fileNameSlug . '.' . $fileNameExt;
-                $fileDestination = UPLOAD_FOLDER . $fileNameNewExt;
-                $userId          = $userData->api_uid;
+                $fileExt         = $this->imgHandler->getFileExt($fileName);
+                $fileNameSlug    = $this->imgHandler->setNewToken(6);
+                $deleteToken     = sha1($fileNameSlug . time());
+                $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
+                $directoryName   = date("Y") . '-' . date("m");
+                $directoryPath   = UPLOAD_FOLDER . $directoryName;
+                $fileDestination = $directoryPath . '/' . $fileNameNew;
+                $this->imgHandler->setUploadsDirectory($directoryPath);
+                $error = false;
 
-                if ($fileError === 0) {
-                    if ($this->isAllowedFileExt($fileName) && $this->isAllowedFileMime($fileTmpName)) {
-                        if ($imgModel->storeImgInDb($userId, $fileNameNewExt, $fileNameSlug, $deleteToken, $fileSize)
-                            && move_uploaded_file($fileTmpName, $fileDestination)) {
-                            $jsonData['url'] = $fileNameSlug;
-                            $jsonData['del'] = $deleteToken;
-                            echo json_encode($jsonData);
-                        } else {
-                            echo "Error during upload";
-                            http_response_code(202);
-                        }
-                    } else {
-                        echo "Invalid fily type/mime";
-                        http_response_code(503);
-                    }
-                } else {
-                    echo "Error during upload";
-                    http_response_code(503);
+                if ($fileSize === 0) {
+                    http_response_code(403);
+                    $error = true;
                 }
+                if ($fileError !== 0) {
+                    error_log($this->imgHandler->uploadErrors($fileError));
+                    http_response_code(500);
+                    $error = true;
+                }
+                if (!$this->imgHandler->isAllowedFileExt($fileName) || !$this->imgHandler->isAllowedFileMime($fileTmpName)) {
+                    http_response_code(415);
+                    $error = true;
+                }
+                if ($this->imgHandler->getImageBySlugModel($fileNameSlug)) {
+                    $fileNameSlug = $this->imgHandler->setNewToken(strlen($fileNameSlug) + 2);
+                    $fileNameNew  = $fileNameSlug . time() . '.' . $fileExt;
+                }
+                if (!move_uploaded_file($fileTmpName, $fileDestination)) {
+                    http_response_code(500);
+                    $error = true;
+                }
+
+                if (!$error) {
+                    $this->imgHandler->storeImgInDb($directoryName, $fileNameNew, $fileNameSlug, $deleteToken, $fileSize, $userId);
+                    $jsonData['url'] = $fileNameSlug;
+                    $jsonData['del'] = $deleteToken;
+                    echo json_encode($jsonData);
+                }
+
             } else {
                 echo 'Invalid keys/auth';
                 http_response_code(401);
