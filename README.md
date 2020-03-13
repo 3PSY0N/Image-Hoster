@@ -4,7 +4,16 @@
 
 All notable changes to this project will be documented in this file.
 
-#### [1.2.1] - 2020-03-08
+#### [1.2.2] - 2020-03-12
+
+```diff
+FIX
++ Upload imgage Api
++ Add dump database
++ Show image when upload
+```
+
+#### [1.2.1] - 2020-03-11
 
 ```diff
 FIX
