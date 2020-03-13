@@ -1,0 +1,43 @@
+{% extends 'base.twig' %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' with {
+        'profileLink': profileLink,
+        'isConnected': isConnected
+    } %}
+    <main role="main" class="container">
+        <div class="jumbotron shadow bg-white rounded">
+            <div class="headGit">
+                <h2>Git Activity Feed</h2>
+                <span>Last 20 commits</span>
+            </div>
+            <div id="commits">
+                <div class="accordion" id="commitsAccordion">
+                    {% for commit in lastCommits %}
+                        <div class="card">
+                            <div class="card-header" id="heading{{ commit.short_id }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ commit.short_id }}" aria-expanded="true" aria-controls="collapse{{ commit.short_id }}">
+                                        <span class="badge badge-light">{{ commit.short_id }}</span> {{ commit.title }}
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapse{{ commit.short_id }}" class="collapse {{ loop.first ? 'show'  }}" aria-labelledby="heading{{ commit.short_id }}" data-parent="#commitsAccordion">
+                                <div class="card-body">
+                                    <ul class="list-unstyled small">
+                                        <li>Author: <a href="https://gitlab.com/{{ commit.author_name }}">{{ commit.committer_name }}</a></li>
+                                        <li>Commit message:
+                                            <blockquote>{{ commit.message|nl2br }}</blockquote>
+                                        </li>
+                                        <li>Commit date: <span class="badge badge-light">{{ commit.committed_date|date("m/d/Y - H:i:s", "Europe/Paris") }}</span></li>
+                                        <li>Direct access to <a href="{{ commit.web_url }}">this commit.</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
