@@ -23,9 +23,9 @@
                 </form>
             </div>
         </div>
-        {% if getImgLink is defined %}
+        {% if getImgLink is not null %}
             <div class="img-container">
-                <img id="uploadedFile" src="{{ getImgLink }}" class="rounded mx-auto d-block">
+                <a href="{{ getImgLink }}"><img src="{{ getImgLink }}" class="img-fluid img-thumbnail mx-auto d-block" alt="Your uploaded image."></a>
             </div>
         {% endif %}
     </main>
