@@ -19,7 +19,7 @@ class ImgHandler extends ImgModel
 
     public function getImgLink()
     {
-        Session::get('imgLink');
+        return Session::get('imgLink');
     }
 
     public function clearImgLink()
