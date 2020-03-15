@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Core\Twig;
+use App\Handlers\ImgHandler;
+use App\Handlers\UserHandler;
 use App\Models\ImgModel;
 use App\Models\UserModel;
 use App\Services\Flash;
@@ -12,19 +14,37 @@ use Pagerfanta\Pagerfanta;
 use App\Services\PagerView;
 use Siler\Http\Request;
 
-class UserProfile extends Twig
+class UserProfile
 {
     private $maxPerPage = 5;
+    /** @var Flash */
+    private $flash;
+    /** @var ImgHandler */
+    private $imgHandler;
+    /** @var UserHandler */
+    private $userHandler;
+    /** @var Twig */
+    private $twig;
 
+    public function __construct()
+    {
+        $this->twig        = new Twig();
+        $this->flash       = new Flash();
+        $this->imgHandler  = new ImgHandler();
+        $this->userHandler = new UserHandler();
+    }
+
+    /**
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function displayUserProfile()
     {
-
         Session::checkUserIsConnected();
-
+        $getImageList = $this->imgHandler->getImagesFromUserModel(base64_decode(Session::get('userSlug')));
         $view       = new PagerView();
-        $imgModel   = new ImgModel();
-        $msg        = new Flash();
-        $adapter    = new ArrayAdapter($imgModel->getImagesFromUser(base64_decode(Session::get('userSlug'))));
+        $adapter    = new ArrayAdapter($getImageList);
         $pagerfanta = new Pagerfanta($adapter);
 
         $getPage     = (int)Request\get('page');
@@ -48,14 +68,14 @@ class UserProfile extends Twig
 
         $pagination = $view->render($pagerfanta, $routeGenerator, $options);
 
-        echo $this->twig->render('profile.twig', [
+        $this->twig->render('profile.twig', [
             'imagesList'  => $currentPageResults,
             'profileLink' => Session::get('userName'),
             'isConnected' => Session::get('isConnected'),
             'pagination'  => $pagination
         ]);
 
-        $msg->clear();
+        $this->flash->clear();
     }
 
     public function logout()
