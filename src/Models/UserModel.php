@@ -37,7 +37,7 @@ class UserModel
         return Database::getPDO()->fetch("
             SELECT *
             FROM imgup_users AS usr
-            LEFT JOIN imgup_apikey AS api
+            LEFT JOIN imgup_api AS api
             ON usr.usr_id = api.api_uid
             WHERE api.api_public = :publicKey
         ", [
