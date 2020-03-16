@@ -31,7 +31,7 @@ class ImgModel
      * @param string $usrSlug
      * @return mixed
      */
-    protected function getImagesFromUserModel(string $usrSlug)
+    public function getImagesFromUserModel(string $usrSlug)
     {
         return Database::getPDO()->fetchAll("
             SELECT *
