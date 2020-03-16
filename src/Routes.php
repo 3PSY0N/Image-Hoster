@@ -26,7 +26,7 @@ Route\get('/profile?([\?]page=[0-9]+)?', controller('App\Controllers\UserProfile
 
 Route\get('/showprofile/([a-zA-Z0-9]+)', controller('App\Controllers\ShowProfile', 'showUserProfile'));
 
-Route\get('/gitstatus', controller('App\Controllers\dist\Gitlab', 'showCommits'));
+Route\get('/gitstatus', controller('App\Controllers\GitStatus', 'showCommits'));
 
 Route\get('.*', function () {
     (new Errors())->e404();
