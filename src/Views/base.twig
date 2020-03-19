@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.min.css') }}">
     {% block stylesheet %}{% endblock %}
-    <script defer src="{{ asset('/js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery-3.4.1.min.js') }}"></script>
     <script defer src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
     <script defer src="{{ asset('/js/fontawesome.min.js') }}"></script>
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon.png') }}"/>
@@ -18,7 +18,7 @@
 {% include 'bodyparts/footer.twig' %}
 
 {% block javascript %}{% endblock %}
-<script>
+<script defer>
     window.setTimeout(function () {
         $('.autoclose').fadeTo(500, 0).slideUp(1000, function () {
             $(this).remove();
