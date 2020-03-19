@@ -1,5 +1,4 @@
 {% extends 'base.twig' %}
-
 {% block body %}
     {% include 'bodyparts/header.twig' with {
         'profileLink': profileLink,
@@ -7,32 +6,91 @@
     } %}
     <main id="profile" role="main" class="container">
         <div class="jumbotron shadow bg-white rounded">
-            <div class="">
-                {{ flashMsg|raw }}
-                {% if imagesList %}
-                    <h1>My uploads</h1>
-                    <div class="links">
-                        {% for image in imagesList %}
-                            <div class="badge badge-info">{{ image.img_id }}</div>
-                            <a href="/si/{{ image.img_slug }}">{{ image.img_slug }}</a> ||
-                            size {{ image.img_size }} ||
-                            post date {{ image.img_date }}<br>
-                        {% endfor %}
+            {{ flashMsg|raw }}
+            {% if imagesList %}
+
+                <h1>My uploads</h1>
+                <article class="photo-list">
+                    {% for image in imagesList %}
+                        <section>
+                            <a href="{{ imgLink(image.img_slug) }}" target="_blank" rel="noopener">
+                                <img src="{{ imgLink(image.img_slug) }}" data-large="{{ imgLink(image.img_slug) }}" data-info="Size: {{ bytePrefix(image.img_size) }}<br>Date: {{ image.img_date|date("d/m/Y - H:i:s", "Europe/Paris") }}"/>
+                            </a>
+                            <p class="small"><a href="{{ imgLink(image.img_slug) }}">Direct Link</a>
+                            <a href="/di?page={{ currentPage }}&img={{ image.img_slug }}">Delete</a></p>
+                        </section>
+                    {% endfor %}
+                </article>
+
+                <div id="imgOverlay" class="modal">
+                    <div>
+                        <img id="img" class="modal-img" src="" alt=""/>
                     </div>
-                    <div class="paginator">
-                        {{ pagination|raw }}
+                    <div class="caption">
+                        <p id="title"></p>
+                        <a href="" id="picture" target="_blank" rel="noopener">Direct access</a>
                     </div>
-                {% else %}
-                    <h2>No uploads yet.</h2>
-                    <p>
-                        Upload your first picture <a href="/">Here</a> !
-                    </p>
-                {% endif %}
-            </div>
+                </div>
+                <div class="paginator">
+                    {{ pagination|raw }}
+                </div>
+            {% else %}
+                <h2>No uploads yet.</h2>
+                <p>Upload your first picture <a href="/">Here</a> !</p>
+            {% endif %}
         </div>
+
     </main>
 {% endblock %}
 
 {% block javascript %}
+{{ parent() }}
+<script>
+(function() {
+    'use strict';
 
+    let modal = {
+        selector: document.getElementById("imgOverlay"),
+        close: function () {
+            modal.selector.classList.remove('shown');
+        },
+        open: function(ev) {
+            ev.preventDefault();
+
+            let img = ev.target;
+            let link = img.parentNode;
+
+            let pictureLink = link.href;
+            let imgLink = img.getAttribute('data-large');
+            let caption = img.getAttribute('data-info');
+
+            // Cleaning IMG div
+            let targetImg = modal.selector.querySelector("img#img");
+            let parentContainer = targetImg.parentNode;
+            parentContainer.removeChild(targetImg);
+
+            let newImg = document.createElement('img');
+            newImg.classList.add('modal-img');
+            newImg.id = "img";
+
+            newImg.src = imgLink;
+            newImg.alt = caption;
+
+            parentContainer.appendChild(newImg);
+
+            modal.selector.querySelector(".caption>#title").innerHTML = caption;
+            modal.selector.querySelector(".caption>#picture").href = pictureLink;
+
+            modal.selector.classList.add("shown");
+        }
+    };
+
+    modal.selector.onclick = modal.close;
+
+    Array.from(document.querySelectorAll("section>a>img"))
+        .forEach(function(s) {
+            s.onclick = modal.open;
+        });
+})();
+</script>
 {% endblock %}
