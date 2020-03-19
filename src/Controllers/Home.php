@@ -81,6 +81,10 @@ class Home
             $this->imgHandler->checkAllowedFileSize($fileSize);
             $this->imgHandler->setUploadsDirectory($directoryPath);
 
+            if (mime_content_type($fileTmpName) === "image/jpeg") {
+                $this->imgHandler->correctImageOrientation($fileTmpName);
+            }
+
             if ($this->imgHandler->getImageBySlugModel($fileNameSlug)) {
                 $fileNameSlug = $this->imgHandler->setNewToken(strlen($fileNameSlug) + 2);
                 $fileNameNew  = $fileNameSlug . time() . '.' . $fileExt;
