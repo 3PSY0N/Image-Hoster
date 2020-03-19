@@ -5,8 +5,6 @@ namespace App\Controllers;
 use App\Core\Twig;
 use App\Handlers\ImgHandler;
 use App\Handlers\UserHandler;
-use App\Models\ImgModel;
-use App\Models\UserModel;
 use App\Services\Flash;
 use App\Services\Session;
 use Pagerfanta\Adapter\ArrayAdapter;
@@ -16,7 +14,7 @@ use Siler\Http\Request;
 
 class UserProfile
 {
-    private $maxPerPage = 5;
+    private $maxPerPage = 16;
     /** @var Flash */
     private $flash;
     /** @var ImgHandler */
@@ -69,10 +67,12 @@ class UserProfile
         $pagination = $view->render($pagerfanta, $routeGenerator, $options);
 
         $this->twig->render('profile.twig', [
+            'flashMsg'    => $this->flash->getFlash(),
             'imagesList'  => $currentPageResults,
             'profileLink' => Session::get('userName'),
             'isConnected' => Session::get('isConnected'),
-            'pagination'  => $pagination
+            'pagination'  => $pagination,
+            'currentPage' => $currentPage
         ]);
 
         $this->flash->clear();
