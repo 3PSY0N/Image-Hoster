@@ -50,7 +50,6 @@ class ImageApi
                     $error = true;
                 }
                 if ($fileError !== 0) {
-                    error_log($this->imgHandler->uploadErrors($fileError));
                     http_response_code(500);
                     $error = true;
                 }
