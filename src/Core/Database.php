@@ -56,14 +56,15 @@ class Database
      * @param $sql
      * @param $arrayArguments
      * @param $fetch
+     * @param null $mode
      * @return mixed
      */
-    private function privateFetch($sql, $arrayArguments, $fetch)
+    private function privateFetch($sql, $arrayArguments, $fetch, $mode = null)
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($arrayArguments);
 
-        return $stmt->$fetch();
+        return $stmt->$fetch($mode);
     }
 
     /**
@@ -73,17 +74,18 @@ class Database
      */
     public function fetchAll($sql, $arrayArguments = [])
     {
-        return $this->privateFetch($sql, $arrayArguments, 'fetchAll');
+        return $this->privateFetch($sql, $arrayArguments, 'fetchAll', PDO::FETCH_OBJ);
     }
 
     /**
+     * IUD for Insert Update Delete
      * @param $sql
      * @param array $arrayArguments
      * @return mixed
      */
-    public function insertUpdate($sql, $arrayArguments = [])
+    public function IUD($sql, $arrayArguments = [])
     {
-        return $this->privateInsertUpdate($sql, $arrayArguments);
+        return $this->privateIUD($sql, $arrayArguments);
     }
 
     /**
@@ -91,10 +93,10 @@ class Database
      * @param array $arrayArguments
      * @return bool
      */
-    private function privateInsertUpdate($sql, $arrayArguments = [])
+    private function privateIUD($sql, $arrayArguments = [])
     {
         $stmt = $this->pdo->prepare($sql);
-
-        return $stmt->execute($arrayArguments);
+        $stmt->execute($arrayArguments);
+        return $stmt->rowCount();
     }
 }
