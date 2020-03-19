@@ -53,4 +53,9 @@ class Toolset
         header('Location: ' . $url);
         exit;
     }
+
+    public static function explodeUrlParam($param)
+    {
+        return explode('=',  $param)[1];
+    }
 }
