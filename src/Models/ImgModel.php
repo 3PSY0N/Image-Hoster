@@ -20,9 +20,40 @@ class ImgModel
     }
 
     /**
+     * @param string $imgSlug
+     * @param string $userSlug
      * @return mixed
      */
-    protected function getAllImagesListModel()
+    public function delImageBySlugModel(string $imgSlug, string $userSlug)
+    {
+        return Database::getPDO()->IUD("
+            DELETE img.*
+            FROM imgup_imgdata img
+            LEFT JOIN imgup_users usr
+            ON img.img_uid = usr.usr_id
+            WHERE usr.usr_slug = :user_slug
+            AND img.img_slug = :img_slug
+        ", [
+            ':img_slug'  => $imgSlug,
+            ':user_slug' => $userSlug
+        ]);
+    }
+
+    public function purgeImgBySlug(string $imgSlug)
+    {
+        return Database::getPDO()->IUD("
+            DELETE img.*
+            FROM imgup_imgdata img
+            WHERE img.img_slug = :img_slug
+        ", [
+            ':img_slug'  => $imgSlug,
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllImagesListModel()
     {
         return Database::getPDO()->fetchAll("SELECT * FROM imgup_imgdata");
     }
@@ -58,7 +89,7 @@ class ImgModel
         $query = "INSERT INTO imgup_imgdata (img_dir, img_uid, img_name, img_slug, img_deleteToken, img_size, img_date) 
                   VALUES (:img_dir, :img_uid, :img_name, :img_slug, :img_deleteToken, :img_size, :img_date)";
 
-        return Database::getPDO()->insertUpdate($query, [
+        return Database::getPDO()->IUD($query, [
             ':img_uid'         => $uid,
             ':img_dir'         => $imgDir,
             ':img_name'        => $imgName,

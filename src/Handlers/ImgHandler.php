@@ -45,9 +45,19 @@ class ImgHandler extends ImgModel
      * @param string $imgSlug
      * @return mixed
      */
-    public function getImageBySlugModel(string $imgSlug)
+    public function getImageBySlug(string $imgSlug)
     {
         return parent::getImageBySlugModel($imgSlug);
+    }
+
+    /**
+     * @param string $imgSlug
+     * @param string $userSlug
+     * @return mixed
+     */
+    public function delImageBySlug(string $imgSlug, string $userSlug)
+    {
+        return parent::delImageBySlugModel($imgSlug, $userSlug);
     }
 
     /**
@@ -79,46 +89,10 @@ class ImgHandler extends ImgModel
     public function checkFileError($fileError): void
     {
         if ($fileError !== 0) {
-            error_log($this->uploadErrors($fileError));
             $this->flash->setFlash('warning', 'Error during file upload, try again or contact an Administrator.', false, '/');
         }
     }
 
-    /**
-     * @param int $code
-     * @return string
-     */
-    public function uploadErrors(int $code)
-    {
-        switch ($code) {
-            case 1:
-                $message = 'The uploaded file exceeds the upload_max_filesize directive in php.ini => ' . ini_get("upload_max_filesize");
-                break;
-            case 2:
-                $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
-                break;
-            case 3:
-                $message = "The uploaded file was only partially uploaded";
-                break;
-            case 4:
-                $message = "No file was uploaded";
-                break;
-            case 5:
-                $message = "Missing a temporary folder";
-                break;
-            case 6:
-                $message = "Failed to write file to disk";
-                break;
-            case 7:
-                $message = "File upload stopped by extension";
-                break;
-            default:
-                $message = "Unknown upload error";
-                break;
-        }
-
-        return $message;
-    }
 
     /**
      * @param $fileName
@@ -209,6 +183,34 @@ class ImgHandler extends ImgModel
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor] . $prefix;
     }
 
+    public function correctImageOrientation($filename) {
+        if (function_exists('exif_read_data')) {
+            $exif = exif_read_data($filename);
+            if($exif && isset($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+                if($orientation != 1){
+                    $img = imagecreatefromjpeg($filename);
+                    $deg = 0;
+                    switch ($orientation) {
+                        case 3:
+                            $deg = 180;
+                            break;
+                        case 6:
+                            $deg = 270;
+                            break;
+                        case 8:
+                            $deg = 90;
+                            break;
+                    }
+                    if ($deg) {
+                        $img = imagerotate($img, $deg, 0);
+                    }
+                    imagejpeg($img, $filename, 100);
+                }
+            }
+        }
+    }
+
     /**
      * @param string $imgDir
      * @param string $fileNameNew
@@ -253,4 +255,45 @@ class ImgHandler extends ImgModel
     {
         Session::set('imgLink', $link);
     }
+
+    /**
+     * @param array $slug
+     */
+    public function deleteImg(array $slug): void
+    {
+        $pageId  = (int)Toolset::explodeUrlParam($slug[1]);
+        $imgSlug = Toolset::explodeUrlParam($slug[2]);
+
+        $imgData   = $this->getImageBySlug($imgSlug);
+        $directory = UPLOAD_FOLDER . $imgData->img_dir . '/' . $imgData->img_name;
+
+        if (!file_exists($directory) || !unlink($directory)) {
+            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', false, '/profile');
+        }
+
+        if ($imgData && $this->delImageBySlug($imgData->img_slug, base64_decode(Session::get('userSlug')))) {
+            $this->flash->setFlash('success', 'Picture deleted !', false);
+            Toolset::redirect('/profile?page=' . $pageId);
+        } else {
+            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', false, '/profile');
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function purge()
+    {
+        $imgData = $this->getAllImagesListModel();
+
+        foreach ($imgData as $img) {
+            $directory = UPLOAD_FOLDER . $img->img_dir . '/' . $img->img_name;
+
+            if (!file_exists($directory)) {
+                $this->purgeImgBySlug($img->img_slug);
+            }
+        }
+        return true;
+    }
+
 }
