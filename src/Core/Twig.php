@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Handlers\ImgHandler;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -32,6 +33,12 @@ class Twig
 
         $twig->addFunction(new TwigFunction('asset', function ($asset) {
             return sprintf('/assets/%s', ltrim($asset, '/'));
+        }));
+        $twig->addFunction(new TwigFunction('imgLink', function ($link) {
+            return sprintf('/si/%s', ltrim($link, '/'));
+        }));
+        $twig->addFunction(new TwigFunction('bytePrefix', function ($size) {
+            return (new ImgHandler())->bytePrefix($size);
         }));
 
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
