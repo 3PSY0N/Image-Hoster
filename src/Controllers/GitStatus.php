@@ -23,7 +23,7 @@ class GitStatus
         $repository = $client->repositories();
 
         $getLastMergeRequest = $client->mergeRequests()->all($this->projectId)[0];
-        $getLastCommits      = array_slice($repository->commits($this->projectId), 0, 20);
+        $getLastCommits      = $repository->commits($this->projectId);
         $getIssues           = $client->issues()->all();
         $getLastRelease      = $repository->releases($this->projectId);
 
