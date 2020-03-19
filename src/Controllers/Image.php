@@ -2,14 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Models\ImgModel;
+use App\Handlers\ImgHandler;
+use App\Services\Session;
 
 class Image
 {
+    public function delete(array $slug)
+    {
+        Session::checkUserIsConnected();
+        $imgHandler = new ImgHandler();
+
+        $imgHandler->deleteImg($slug);
+    }
+
     public function show(array $slug)
     {
-        $imgModel = new ImgModel();
-        $dbImage  = $imgModel->getImageBySlugModel(end($slug));
+        $imgHandler = new ImgHandler();
+        $dbImage  = $imgHandler->getImageBySlug(end($slug));
 
         if ($dbImage) {
             $imgLocation = UPLOAD_FOLDER . $dbImage->img_dir . '/' . $dbImage->img_name;
