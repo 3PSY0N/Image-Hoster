@@ -1,5 +1,9 @@
 {% extends 'base.twig' %}
 
+{% block javascript %}
+<script defer src="{{ asset('/js/fileinput.min.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% include 'bodyparts/header.twig' with {
         'profileLink': profileLink,
@@ -29,13 +33,4 @@
             </div>
         {% endif %}
     </main>
-{% endblock %}
-
-{% block javascript %}
-<script defer>
-$(".custom-file-input").on("change", function () {
-    let fileName = $(this).val().split("\\").pop();
-    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});
-</script>
 {% endblock %}
