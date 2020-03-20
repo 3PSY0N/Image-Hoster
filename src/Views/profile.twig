@@ -1,0 +1,49 @@
+{% extends 'base.twig' %}
+
+{% block javascript %}
+<script defer src="{{ asset('/js/modal.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' with {
+        'profileLink': profileLink,
+        'isConnected': isConnected
+    } %}
+    <main id="profile" role="main" class="container">
+        <div class="jumbotron shadow bg-white rounded">
+            {{ flashMsg|raw }}
+            {% if imagesList %}
+
+                <h1>My uploads</h1>
+                <article class="photo-list">
+                    {% for image in imagesList %}
+                        <section>
+                            <a href="{{ imgLink(image.img_slug) }}" target="_blank" rel="noopener">
+                                <img src="{{ imgLink(image.img_slug) }}" data-large="{{ imgLink(image.img_slug) }}" data-info="Size: {{ bytePrefix(image.img_size) }}<br>Date: {{ image.img_date|date("d/m/Y - H:i:s", "Europe/Paris") }}"/>
+                            </a>
+                            <p class="small"><a href="{{ imgLink(image.img_slug) }}">Direct Link</a>
+                            <a href="/di?page={{ currentPage }}&img={{ image.img_slug }}">Delete</a></p>
+                        </section>
+                    {% endfor %}
+                </article>
+
+                <div id="imgOverlay" class="modal">
+                    <div>
+                        <img id="img" class="modal-img" src="" alt=""/>
+                    </div>
+                    <div class="caption">
+                        <p id="title"></p>
+                        <a href="" id="picture" target="_blank" rel="noopener">Direct access</a>
+                    </div>
+                </div>
+                <div class="paginator">
+                    {{ pagination|raw }}
+                </div>
+            {% else %}
+                <h2>No uploads yet.</h2>
+                <p>Upload your first picture <a href="/">Here</a> !</p>
+            {% endif %}
+        </div>
+
+    </main>
+{% endblock %}

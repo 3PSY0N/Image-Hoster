@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' with {
+        'profileLink': profileLink,
+        'isConnected': isConnected
+    } %}
+    <main id="e404" role="main" class="container">
+        <div class="jumbotron shadow bg-white rounded text-center">
+            <img id="logo404" src="{{ asset('/img/logo.svg') }}" alt="">
+            <h1 class="pt-5">ERROR 404</h1>
+            <p>
+                The page you are looking for doesn't exist or was moved.<br>
+                (We have recently overhauled our website and this may be an old URL.)<br>
+                We recommend going to the <a href="/">Home</a> page to find what you looking for..
+            </p>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

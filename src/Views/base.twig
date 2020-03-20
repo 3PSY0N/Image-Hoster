@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ asset('/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/style.min.css') }}">
+    {% block stylesheet %}{% endblock %}
+    <script defer src="{{ asset('/vendor/jquery/jquery-3.4.1.min.js') }}"></script>
+    <script defer src="{{ asset('/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script defer src="{{ asset('/vendor/fontawesome/fontawesome.min.js') }}"></script>
+    <script defer src="{{ asset('/js/main.min.js') }}"></script>
+    {% block javascript %}{% endblock %}
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon.png') }}"/>
+    {% block title %}<title>SimpleImgUpload</title>{% endblock %}
+</head>
+<body>
+
+{% block body %}{% endblock %}
+{% include 'bodyparts/footer.twig' %}
+</body>
+</html>

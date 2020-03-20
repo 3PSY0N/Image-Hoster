@@ -1,46 +1,32 @@
 # Image-Hoster
+Version: v2.0
 
-### Change Log
+Run `composer install`
 
-All notable changes to this project will be documented in this file.
+Import `database_sample.sql` in mySQL or MariaDB
 
-#### [1.2.1] - 2020-03-08
+-----
+What's new?
 
-```diff
-FIX
-+ Upload imgage path
-+ Image viewer path
-```
+I'm glad to share my personal project with you!
+I started this project for learning purposes first because i'm pretty new in dev (2y).
+-----
+This script is a simple image hosting system.
 
-#### [1.2.0] - 2020-03-08
+**Wich functionalities?**
 
-```diff
-UPDATE
-+ Starting refactoring all pages
-- Removed Macaw router
-+ Added Siler router
-```
+**You can:**
+- Upload images jpg, png, gif atm.
+- Upload images with **[ShareX](https://getsharex.com/)** via something like Api
+- Connect to you account.
+- Manage images.
 
-####  [1.1.0] - 2020-02-27
+**System:**
+- Generate link like `https://imagehoster.tld/si/$VyBNA`
+- Show PHP images instead real image.
+- Auto rotate mobile images.
 
-```diff
-ADDED
-+ Router package (macaw)
-+ Home, Login, Show Image pages
-+ Uploads functions
-
-+ Api v1.0: Add little Api to communicate with the website
-STATUS: In progress
-```
-
-#### [1.0.0] - 2020-02-25
-
-```diff
-+ Deploying v1.0
-```
-
-#### [0.0.0] - 2020-02-23
-
-```diff
-+ Starting project
-```
+**Soon:**
+- Create account.
+- Admin manager.
+- And more.

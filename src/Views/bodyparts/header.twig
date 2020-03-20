@@ -1,0 +1,32 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark b-main sticky-top">
+        <div class="container">
+            <div id="logo-brand" class="navbar-brand"><img src="{{ asset('/img/logo.svg') }}" alt="logo"></div>
+            <a class="navbar-brand" href="/">SimpleImgUpload</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navToggler" aria-controls="navToggler" aria-expanded="false" aria-label="Toggle NavBar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="text-center collapse navbar-collapse" id="navToggler">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if isConnected %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">{{ profileLink }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+

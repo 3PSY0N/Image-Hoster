@@ -1,0 +1,36 @@
+{% extends 'base.twig' %}
+
+{% block javascript %}
+<script defer src="{{ asset('/js/fileinput.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' with {
+        'profileLink': profileLink,
+        'isConnected': isConnected
+    } %}
+    <main role="main" class="container">
+        <div class="jumbotron shadow bg-white rounded">
+            <div class="form">
+                {{ flashMsg|raw }}
+                <span class="small text-muted">Allowed type: <b>{{ allowedTypes }}</b> - Allowed size: <b>{{ allowedSize }}</b></span>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input name="inputFile" type="file" class="custom-file-input" id="browseImgFile" aria-describedby="browseImgFileAddon">
+                            <label class="custom-file-label" for="browseImgFile">Choose image file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button name="submit" class="btn btn-primary" type="submit" id="browseImgFileAddon">Send my image</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if getImgLink is not null %}
+            <div class="img-container">
+                <a href="{{ getImgLink }}"><img src="{{ getImgLink }}" class="img-fluid img-thumbnail mx-auto d-block" alt="Your uploaded image."></a>
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+
+{% block body %}
+    {% include 'bodyparts/header.twig' %}
+    <main role="main" class="container pt-5">
+
+        <form class="form-signin" method="post" action="/login">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                {{ flashMsg|raw }}
+            </div>
+            <div class="form-label-group">
+                <input type="text" name="inputIdentity" id="inputIdentity" class="form-control" placeholder="Identity">
+                <label for="inputIdentity">Identity</label>
+            </div>
+            <div class="form-label-group">
+                <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password">
+                <label for="inputPassword">Password</label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Sign in</button>
+        </form>
+    </main>
+{% endblock %}
