@@ -37,7 +37,6 @@ class ImageApi
                 $fileError       = $file['error'];
                 $fileExt         = $this->imgHandler->getFileExt($fileName);
                 $fileNameSlug    = $this->imgHandler->setNewToken(6);
-                $deleteToken     = sha1($fileNameSlug . time());
                 $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
                 $directoryName   = date("Y") . '-' . date("m");
                 $directoryPath   = UPLOAD_FOLDER . $directoryName;
@@ -67,9 +66,8 @@ class ImageApi
                 }
 
                 if (!$error) {
-                    $this->imgHandler->storeImgInDb($directoryName, $fileNameNew, $fileNameSlug, $deleteToken, $fileSize, $userId);
+                    $this->imgHandler->storeImgInDb($directoryName, $fileNameNew, $fileNameSlug, $fileSize, $userId);
                     $jsonData['url'] = $fileNameSlug;
-                    $jsonData['del'] = $deleteToken;
                     echo json_encode($jsonData);
                 }
 

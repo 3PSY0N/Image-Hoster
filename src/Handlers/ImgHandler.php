@@ -222,9 +222,9 @@ class ImgHandler extends ImgModel
      * @param string $fileDestination
      * @param $fileName
      */
-    public function uploadFile(string $imgDir, string $fileNameNew, string $fileNameSlug, string $deleteToken, $fileSize, $usrUid, $fileTmpName, string $fileDestination, $fileName): void
+    public function uploadFile(string $imgDir, string $fileNameNew, string $fileNameSlug, $fileSize, $usrUid, $fileTmpName, string $fileDestination, $fileName): void
     {
-        if ($this->storeImgInDb($imgDir, $fileNameNew, $fileNameSlug, $deleteToken, $fileSize, $usrUid) && move_uploaded_file($fileTmpName, $fileDestination)) {
+        if ($this->storeImgInDb($imgDir, $fileNameNew, $fileNameSlug, $fileSize, $usrUid) && move_uploaded_file($fileTmpName, $fileDestination)) {
             $this->setImgLink('https://' . $_SERVER['HTTP_HOST'] . SHOW_IMG_ROUTE . $fileNameSlug);
 
             $this->flash->setFlash('success', 'Upload success: <b>' . $fileName . '</b>', false);
@@ -238,14 +238,13 @@ class ImgHandler extends ImgModel
      * @param string $imgDir
      * @param string $imgName
      * @param string $imgSlug
-     * @param string $imgDeleteToken
      * @param int $imgSize
      * @param int|null $uid
      * @return mixed
      */
-    public function storeImgInDb(string $imgDir, string $imgName, string $imgSlug, string $imgDeleteToken, int $imgSize, int $uid = null)
+    public function storeImgInDb(string $imgDir, string $imgName, string $imgSlug, int $imgSize, int $uid = null)
     {
-        return $this->storeImgInDbModel($imgDir, $imgName, $imgSlug, $imgDeleteToken, $imgSize, $uid);
+        return $this->storeImgInDbModel($imgDir, $imgName, $imgSlug, $imgSize, $uid);
     }
 
     /**

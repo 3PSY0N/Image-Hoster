@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS `imgup_imgdata` (
   `img_dir` varchar(255) CHARACTER SET latin1 NOT NULL,
   `img_name` varchar(255) CHARACTER SET latin1 NOT NULL,
   `img_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `img_deleteToken` varchar(255) CHARACTER SET latin1 NOT NULL,
   `img_size` int(11) NOT NULL,
   `img_date` datetime NOT NULL,
   PRIMARY KEY (`img_id`),

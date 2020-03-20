@@ -79,22 +79,20 @@ class ImgModel
      * @param string $imgDir
      * @param string $imgName
      * @param string $imgSlug
-     * @param string $imgDeleteToken
      * @param int $imgSize
      * @param int|null $uid
      * @return mixed
      */
-    protected function storeImgInDbModel(string $imgDir, string $imgName, string $imgSlug, string $imgDeleteToken, int $imgSize, int $uid = null)
+    protected function storeImgInDbModel(string $imgDir, string $imgName, string $imgSlug, int $imgSize, int $uid = null)
     {
-        $query = "INSERT INTO imgup_imgdata (img_dir, img_uid, img_name, img_slug, img_deleteToken, img_size, img_date) 
-                  VALUES (:img_dir, :img_uid, :img_name, :img_slug, :img_deleteToken, :img_size, :img_date)";
+        $query = "INSERT INTO imgup_imgdata (img_dir, img_uid, img_name, img_slug, img_size, img_date) 
+                  VALUES (:img_dir, :img_uid, :img_name, :img_slug, :img_size, :img_date)";
 
         return Database::getPDO()->IUD($query, [
             ':img_uid'         => $uid,
             ':img_dir'         => $imgDir,
             ':img_name'        => $imgName,
             ':img_slug'        => $imgSlug,
-            ':img_deleteToken' => $imgDeleteToken,
             ':img_size'        => $imgSize,
             ':img_date'        => date('Y-m-d H:i:s', time())
         ]);

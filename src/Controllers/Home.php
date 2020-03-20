@@ -69,7 +69,6 @@ class Home
 
             $fileExt         = $this->imgHandler->getFileExt($fileName);
             $fileNameSlug    = $this->imgHandler->setNewToken($tokenSize);
-            $deleteToken     = sha1($fileNameSlug . time());
             $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
             $directoryName   = date("Y") . '-' . date("m");
             $directoryPath   = UPLOAD_FOLDER . $directoryName;
@@ -90,7 +89,7 @@ class Home
                 $fileNameNew  = $fileNameSlug . time() . '.' . $fileExt;
             }
 
-            $this->imgHandler->uploadFile($directoryName, $fileNameNew, $fileNameSlug, $deleteToken, $fileSize, $usrUid, $fileTmpName, $fileDestination, $fileName);
+            $this->imgHandler->uploadFile($directoryName, $fileNameNew, $fileNameSlug, $fileSize, $usrUid, $fileTmpName, $fileDestination, $fileName);
         }
     }
 }
