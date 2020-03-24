@@ -30,8 +30,7 @@ class GitStatus
 
             $getLastMergeRequest = $client->mergeRequests()->all($this->projectId)[0];
             $getLastCommits      = $repository->commits($this->projectId);
-            $getIssues           = $client->issues()->all();
-            $getLastRelease      = $repository->releases($this->projectId);
+
         } catch (\Exception $e) {
             $this->flash->setFlash('info', 'Dev Status is unavailable at this time.', 'Dev Status', false, '/');
         }
