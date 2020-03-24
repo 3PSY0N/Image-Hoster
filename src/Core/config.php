@@ -9,6 +9,7 @@ define("SHOW_IMG_ROUTE", '/si/');
 // GITLAB
 define("GITLAB_API_TOKEN", "gitab api token");
 define("GITLAB_PROJECT_ID", gitlab project id);
+define("GITLAB_PROJECT_VERSION", 'v2.5.0');
 // SMTPS CONFIGURATION
 define("MAIL_HOST", 'your smtp host');
 define("MAIL_SMTP_PORT", 465);
