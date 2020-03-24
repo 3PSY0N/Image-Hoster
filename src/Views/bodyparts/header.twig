@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-md navbar-dark b-main sticky-top">
         <div class="container">
             <div id="logo-brand" class="navbar-brand"><img src="{{ asset('/img/logo.svg') }}" alt="logo"></div>
-            <a class="navbar-brand" href="/">SimpleImgUpload</a>
+            <a class="navbar-brand" href="/">Image<span id="nav-upload-title">Hoster</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navToggler" aria-controls="navToggler" aria-expanded="false" aria-label="Toggle NavBar">
                 <i class="fas fa-bars"></i>
             </button>
@@ -13,7 +13,7 @@
                     </li>
                     {% if isConnected %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/profile">{{ profileLink }}</a>
+                            <a class="nav-link" href="/profile">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>
@@ -21,6 +21,9 @@
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
                         </li>
                     {% endif %}
                 </ul>
