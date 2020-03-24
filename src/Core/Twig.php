@@ -62,12 +62,13 @@ class Twig
     /**
      * @param $template
      * @param array $array
+     * @return string
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    function render($template, $array = [])
+    public function render($template, $array = [])
     {
-        echo $this->twig->render($template, $array);
+        return $this->twig->render($template, $array);
     }
 }

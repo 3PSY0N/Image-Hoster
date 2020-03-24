@@ -58,4 +58,34 @@ class Toolset
     {
         return explode('=',  $param)[1];
     }
+
+    /**
+     * @return string
+     */
+    public static function siteUrl()
+    {
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            $link = "https";
+        } else {
+            $link = "http";
+        }
+        $link .= "://";
+        $link .= $_SERVER['HTTP_HOST'];
+
+        return $link;
+    }
+
+    /**
+     * time in seconds, if minutes = true, minutes will be converted to seconds
+     * @param int $time
+     * @param bool $minutes
+     * @return false|string
+     */
+    public static function setExpireDate(int $time = null , bool $minutes = false)
+    {
+        if ($minutes) {
+            $time = ($time * 60);
+        }
+        return date('Y-m-d H:i:s', time() + $time);
+    }
 }
