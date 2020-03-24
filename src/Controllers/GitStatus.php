@@ -8,8 +8,8 @@ use Gitlab\Client;
 
 class GitStatus
 {
-    private $token = 'API_TOKEN';
-    private $projectId = PROJECT_ID;
+    private $token = GITLAB_API_TOKEN;
+    private $projectId = GITLAB_PROJECT_ID;
 
     public function __construct()
     {
