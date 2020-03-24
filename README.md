@@ -1,5 +1,5 @@
 # Image-Hoster
-Version: v2.5.0
+Version: v2.5.1
 
 Run `composer install`
 
