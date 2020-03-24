@@ -1,11 +1,12 @@
 # Image-Hoster
-Version: v2.5.0
+Version: v2.5.1
 
 Run `composer install`
 
 Import `database_sample.sql` in mySQL or MariaDB
 
-Edit `core/config.php`
+- Copy `src/Core/config.php.dist` to `config.php` and edit with your conf.
+- Copy `src/Core/setupdb.json.dist` to `setupdb.json` and edit with your conf.
 
 -----
 What's new?
