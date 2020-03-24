@@ -13,7 +13,10 @@
         <div class="jumbotron shadow bg-white rounded">
             <div class="form">
                 {{ flashMsg|raw }}
-                <span class="small text-muted">Allowed type: <b>{{ allowedTypes }}</b> - Allowed size: <b>{{ allowedSize }}</b></span>
+                <div  class="small text-muted row mb-3 justify-content-center">
+                    <span class="infosMx-1">Allowed type: <b>{{ allowedTypes }}</b></span>
+                    <span class="infosMx-1">Allowed size: <b>{{ allowedSize }}</b></span>
+                </div>
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="input-group">
                         <div class="custom-file">
