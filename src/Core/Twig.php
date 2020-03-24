@@ -26,9 +26,9 @@ class Twig
     {
         $loader = new FilesystemLoader(ROOT . '/src/Views/');
         $twig   = new Environment($loader, [
-            'debug' => true,
-            // 'cache' => ROOT . '/cache/',
-            'cache' => false
+//            'debug' => true,
+             'cache' => ROOT . '/cache/',
+//            'cache' => false
         ]);
 
         $twig->addFunction(new TwigFunction('asset', function ($asset) {
@@ -41,6 +41,8 @@ class Twig
             return (new ImgHandler())->bytePrefix($size);
         }));
 
+        $twig->addGlobal('releaseVersion', GITLAB_PROJECT_VERSION);
+
         $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load($class)
             {
@@ -51,6 +53,7 @@ class Twig
                 return null;
             }
         });
+
         $twig->addExtension(new MarkdownExtension());
         $twig->addExtension(new IntlExtension());
         $twig->addExtension(new DebugExtension());
