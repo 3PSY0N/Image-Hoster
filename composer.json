@@ -8,11 +8,12 @@
     "leocavalcante/siler": "^1.7",
     "pagerfanta/pagerfanta": "^2.1",
     "twig/twig": "^3.0",
-    "twig/markdown-extra": "^3.0",
     "erusev/parsedown": "^1.7",
+    "twig/markdown-extra": "^3.0",
     "twig/intl-extra": "^3.0",
     "twig/html-extra": "^3.0",
-    "m4tthumphrey/php-gitlab-api": "^9.17"
+    "m4tthumphrey/php-gitlab-api": "^9.17",
+    "phpmailer/phpmailer": "^6.1"
   },
   "require-dev": {
     "symfony/var-dumper": "^5.0"
