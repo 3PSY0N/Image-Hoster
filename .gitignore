@@ -3,4 +3,5 @@ _assetsVendor
 prepros.config
 /vendor
 /uploads
-devAssets
+/devAssets
+/src/Core/config.php
