@@ -1,5 +1,5 @@
 # Image-Hoster
-Version: v2.0
+Version: v2.5.0
 
 Run `composer install`
 
@@ -20,6 +20,7 @@ This script is a simple image hosting system.
 - Upload images with **[ShareX](https://getsharex.com/)** via something like Api
 - Connect to you account.
 - Manage images.
+- Create account.
 
 **System:**
 - Generate link like `https://imagehoster.tld/si/$VyBNA`
@@ -27,6 +28,5 @@ This script is a simple image hosting system.
 - Auto rotate mobile images.
 
 **Soon:**
-- Create account.
 - Admin manager.
 - And more.
