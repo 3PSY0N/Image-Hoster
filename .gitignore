@@ -5,3 +5,5 @@ prepros.config
 /uploads
 /devAssets
 /cache
+/src/Core/config.php
+/src/Core/setupdb.json
