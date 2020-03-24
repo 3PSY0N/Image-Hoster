@@ -42,11 +42,14 @@ class Login extends Twig
                 $user = $userHandler->getUserByEmail($inputIdentity);
 
                 if ($user && password_verify($inputPassword, $user->usr_pswd)) {
-                    Session::setConnected(true);
-                    Session::setAdmin($user->usr_admin);
-                    Session::set('userSlug', Toolset::b64encode($user->usr_slug));
-                    Session::set('userName', $user->usr_name);
-                    $msg->setFlash('success', 'Login success !', null,  false, '/profile');
+                    if ($user->usr_reg_date) {
+                        Session::setConnected(true);
+                        Session::setAdmin($user->usr_admin);
+                        Session::set('userSlug', Toolset::b64encode($user->usr_slug));
+                        $msg->setFlash('success', 'Login success !', null,  false, '/profile');
+                    } else {
+                        $msg->setFlash('warning', 'Please activate your account before login in.', null,false, '/login');
+                    }
                 } else {
                     $msg->setFlash('warning', 'Identity/Password does not exist.', null,false, '/login');
                 }
