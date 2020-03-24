@@ -4,4 +4,4 @@ prepros.config
 /vendor
 /uploads
 /devAssets
-/src/Core/config.php
+/cache
