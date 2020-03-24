@@ -79,7 +79,7 @@ class ImgHandler extends ImgModel
     public function checkEmptyFile($fileSize): void
     {
         if ($fileSize === 0) {
-            $this->flash->setFlash('info', 'Chose a file to upload.', false, '/');
+            $this->flash->setFlash('info', 'Chose a file to upload.', null, false, '/');
         }
     }
 
@@ -89,7 +89,7 @@ class ImgHandler extends ImgModel
     public function checkFileError($fileError): void
     {
         if ($fileError !== 0) {
-            $this->flash->setFlash('warning', 'Error during file upload, try again or contact an Administrator.', false, '/');
+            $this->flash->setFlash('warning', 'Error during file upload, try again or contact an Administrator.', null, false, '/');
         }
     }
 
@@ -101,7 +101,7 @@ class ImgHandler extends ImgModel
     public function checkFileExtMime($fileName, $fileTmpName): void
     {
         if (!$this->isAllowedFileExt($fileName) && !$this->isAllowedFileMime($fileTmpName)) {
-            $this->flash->setFlash('warning', 'Incorrect file type, must be: <strong>' . $this->getAlowedTypes() . '</strong>', false, '/');
+            $this->flash->setFlash('warning', 'Incorrect file type, must be: <strong>' . $this->getAlowedTypes() . '</strong>', null, false, '/');
         }
     }
 
@@ -157,7 +157,7 @@ class ImgHandler extends ImgModel
     public function checkAllowedFileSize($fileSize): void
     {
         if ($fileSize > SIZE_MAX) {
-            $this->flash->setFlash('warning', 'File size too big! Max allowed is <b>' . $this->getSizeMax() . '</b>', false, '/');
+            $this->flash->setFlash('warning', 'File size too big! Max allowed is <b>' . $this->getSizeMax() . '</b>', null, false, '/');
         }
     }
 
@@ -227,10 +227,10 @@ class ImgHandler extends ImgModel
         if ($this->storeImgInDb($imgDir, $fileNameNew, $fileNameSlug, $fileSize, $usrUid) && move_uploaded_file($fileTmpName, $fileDestination)) {
             $this->setImgLink('https://' . $_SERVER['HTTP_HOST'] . SHOW_IMG_ROUTE . $fileNameSlug);
 
-            $this->flash->setFlash('success', 'Upload success: <b>' . $fileName . '</b>', false);
-            $this->flash->setFlash('info', 'Direct access: <b>https://' . $_SERVER['HTTP_HOST'] . SHOW_IMG_ROUTE . $fileNameSlug . '</b>', true, '/');
+            $this->flash->setFlash('success', 'Upload success: <b>' . $fileName . '</b>', null, false);
+            $this->flash->setFlash('info', 'Direct access: <b>https://' . $_SERVER['HTTP_HOST'] . SHOW_IMG_ROUTE . $fileNameSlug . '</b>', null, true,  '/');
         } else {
-            $this->flash->setFlash('danger', 'Error during file upload, try again.', false, '/');
+            $this->flash->setFlash('danger', 'Error during file upload, try again.', null, false, '/');
         }
     }
 
@@ -267,14 +267,14 @@ class ImgHandler extends ImgModel
         $directory = UPLOAD_FOLDER . $imgData->img_dir . '/' . $imgData->img_name;
 
         if (!file_exists($directory) || !unlink($directory)) {
-            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', false, '/profile');
+            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', null, false, '/profile');
         }
 
         if ($imgData && $this->delImageBySlug($imgData->img_slug, base64_decode(Session::get('userSlug')))) {
-            $this->flash->setFlash('success', 'Picture deleted !', false);
+            $this->flash->setFlash('success', 'Picture deleted !', null, false);
             Toolset::redirect('/profile?page=' . $pageId);
         } else {
-            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', false, '/profile');
+            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', null, false, '/profile');
         }
     }
 

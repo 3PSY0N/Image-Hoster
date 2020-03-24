@@ -8,8 +8,9 @@ use Gitlab\Client;
 
 class GitStatus
 {
-    private $token = 'API_TOKEN';
-    private $projectId = PROJECT_ID;
+    private $token = GITLAB_API_TOKEN;
+    private $projectId = GITLAB_PROJECT_ID;
+
     public function __construct()
     {
         $this->twig = new Twig();
@@ -27,7 +28,7 @@ class GitStatus
         $getIssues           = $client->issues()->all();
         $getLastRelease      = $repository->releases($this->projectId);
 
-        $this->twig->render('gitstatus.twig', [
+        echo $this->twig->render('gitstatus.twig', [
             'profileLink'      => Session::get('userName'),
             'isConnected'      => Session::get('isConnected'),
             'lastCommits'      => $getLastCommits,

@@ -18,6 +18,8 @@ class Login extends Twig
      */
     public function getLogin()
     {
+        if (Session::isConnected()) { Toolset::redirect('/'); }
+
         $flash = new Flash();
         echo $this->twig->render('login.twig', [
             'flashMsg' => $flash->getFlash(),
@@ -35,18 +37,21 @@ class Login extends Twig
             $inputPassword = $_POST['inputPassword'];
 
             if (empty($inputIdentity) || empty($inputPassword)) {
-                $msg->setFlash('warning', 'Identity/Password cannot be empty.', false, '/login');
+                $msg->setFlash('warning', 'Identity/Password cannot be empty.', null,false, '/login');
             } else {
                 $user = $userHandler->getUserByEmail($inputIdentity);
 
                 if ($user && password_verify($inputPassword, $user->usr_pswd)) {
-                    Session::setConnected(true);
-                    Session::setAdmin($user->usr_admin);
-                    Session::set('userSlug', Toolset::b64encode($user->usr_slug));
-                    Session::set('userName', $user->usr_name);
-                    $msg->setFlash('success', 'Login success !', false, '/profile');
+                    if ($user->usr_reg_date) {
+                        Session::setConnected(true);
+                        Session::setAdmin($user->usr_admin);
+                        Session::set('userSlug', Toolset::b64encode($user->usr_slug));
+                        $msg->setFlash('success', 'Login success !', null,  false, '/profile');
+                    } else {
+                        $msg->setFlash('warning', 'Please activate your account before login in.', null,false, '/login');
+                    }
                 } else {
-                    $msg->setFlash('warning', 'Identity/Password does not exist.', false, '/login');
+                    $msg->setFlash('warning', 'Identity/Password does not exist.', null,false, '/login');
                 }
             }
         }

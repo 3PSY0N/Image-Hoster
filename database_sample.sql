@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `imgup_api` (
 CREATE TABLE IF NOT EXISTS `imgup_imgdata` (
   `img_id` int(11) NOT NULL AUTO_INCREMENT,
   `img_uid` int(11) DEFAULT NULL,
-  `img_dir` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `img_name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `img_dir` varchar(255) NOT NULL,
+  `img_name` varchar(255) NOT NULL,
   `img_slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `img_size` int(11) NOT NULL,
   `img_date` datetime NOT NULL,
@@ -32,11 +32,13 @@ CREATE TABLE IF NOT EXISTS `imgup_imgdata` (
 
 CREATE TABLE IF NOT EXISTS `imgup_users` (
   `usr_id` int(11) NOT NULL AUTO_INCREMENT,
-  `usr_name` varchar(50) CHARACTER SET latin1 NOT NULL,
-  `usr_slug` varchar(50) CHARACTER SET latin1 NOT NULL,
-  `usr_email` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `usr_pswd` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `usr_slug` varchar(255) NOT NULL,
+  `usr_email` varchar(255) NOT NULL,
+  `usr_pswd` varchar(255) NOT NULL,
   `usr_admin` tinyint(1) DEFAULT NULL,
+  `usr_reg_date` datetime DEFAULT NULL,
+  `usr_token` varchar(255) DEFAULT NULL,
+  `usr_token_expire` datetime DEFAULT NULL,
   PRIMARY KEY (`usr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

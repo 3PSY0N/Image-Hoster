@@ -66,7 +66,7 @@ class UserProfile
 
         $pagination = $view->render($pagerfanta, $routeGenerator, $options);
 
-        $this->twig->render('profile.twig', [
+        echo $this->twig->render('profile.twig', [
             'flashMsg'    => $this->flash->getFlash(),
             'imagesList'  => $currentPageResults,
             'profileLink' => Session::get('userName'),
@@ -81,7 +81,7 @@ class UserProfile
     public function logout()
     {
         $msg = new Flash();
-        $msg->setFlash('success', 'You are now logged out, see you soon !', false);
+        $msg->setFlash('success', 'You are now logged out, see you soon !', null, false);
         Session::checkUserIsConnected();
         Session::logout();
     }
