@@ -66,7 +66,7 @@ class UserProfile
 
         $pagination = $view->render($pagerfanta, $routeGenerator, $options);
 
-        $this->twig->render('profile.twig', [
+        echo $this->twig->render('profile.twig', [
             'flashMsg'    => $this->flash->getFlash(),
             'imagesList'  => $currentPageResults,
             'profileLink' => Session::get('userName'),

@@ -38,7 +38,7 @@ class Home
      */
     public function displayHome()
     {
-        $this->twig->render('home.twig', [
+        echo $this->twig->render('home.twig', [
             'flashMsg'     => $this->flash->getFlash(),
             'allowedSize'  => $this->imgHandler->getSizeMax(),
             'allowedTypes' => $this->imgHandler->getAlowedTypes(),
