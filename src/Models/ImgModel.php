@@ -70,6 +70,7 @@ class ImgModel
             LEFT JOIN imgup_users AS usr
             ON	img.img_uid = usr.usr_id
             WHERE usr.usr_slug = :usr_slug
+            ORDER BY img.img_date DESC
         ", [
             ':usr_slug' => $usrSlug
         ]);
@@ -89,12 +90,12 @@ class ImgModel
                   VALUES (:img_dir, :img_uid, :img_name, :img_slug, :img_size, :img_date)";
 
         return Database::getPDO()->IUD($query, [
-            ':img_uid'         => $uid,
-            ':img_dir'         => $imgDir,
-            ':img_name'        => $imgName,
-            ':img_slug'        => $imgSlug,
-            ':img_size'        => $imgSize,
-            ':img_date'        => date('Y-m-d H:i:s', time())
+            ':img_uid'  => $uid,
+            ':img_dir'  => $imgDir,
+            ':img_name' => $imgName,
+            ':img_slug' => $imgSlug,
+            ':img_size' => $imgSize,
+            ':img_date' => date('Y-m-d H:i:s', time())
         ]);
     }
 }
