@@ -27,7 +27,7 @@ Route\get('/login', controller('App\Controllers\Login', 'getLogin'));
 Route\post('/login', controller('App\Controllers\Login', 'postLogin'));
 Route\get('/logout', controller('App\Controllers\UserProfile', 'logout'));
 // Private
-Route\get('/profile?([\?]page=[0-9]+)?', controller('App\Controllers\UserProfile', 'displayUserProfile'));
+Route\get('/user/dashboard?([\?]page=[0-9]+)?', controller('App\Controllers\UserProfile', 'displayUserProfile'));
 // Admin
 Route\get('/admin/purge', controller('App\Handlers\ImgHandler', 'purge'));
 // Errors
