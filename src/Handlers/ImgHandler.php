@@ -27,6 +27,12 @@ class ImgHandler extends ImgModel
         Session::destroy('imgLink');
     }
 
+    public static function getImgDimensions($imgDir, $imgName)
+    {
+        $path = UPLOAD_FOLDER . $imgDir . '/' . $imgName;
+        return getimagesize($path);
+    }
+
     /**
      * @param int $length
      * @param bool $lower
@@ -212,10 +218,26 @@ class ImgHandler extends ImgModel
     }
 
     /**
+     * @param int $chars
+     * @return string
+     * @throws Exception
+     */
+    public function checkAndSetNewSlug(int $chars): string
+    {
+        $newSlug = $this->setNewToken($chars);
+
+        if ($this->getImageBySlugModel($newSlug)) {
+            error_log("Duplicate token entry" . $newSlug, 0);
+            $newSlug = $this->checkAndSetNewSlug(strlen($newSlug) + 1);
+        }
+
+        return $newSlug;
+    }
+
+    /**
      * @param string $imgDir
      * @param string $fileNameNew
      * @param string $fileNameSlug
-     * @param string $deleteToken
      * @param $fileSize
      * @param $usrUid
      * @param $fileTmpName
@@ -262,19 +284,18 @@ class ImgHandler extends ImgModel
     {
         $pageId  = (int)Toolset::explodeUrlParam($slug[1]);
         $imgSlug = Toolset::explodeUrlParam($slug[2]);
-
         $imgData   = $this->getImageBySlug($imgSlug);
-        $directory = UPLOAD_FOLDER . $imgData->img_dir . '/' . $imgData->img_name;
-
-        if (!file_exists($directory) || !unlink($directory)) {
-            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', null, false, '/profile');
-        }
 
         if ($imgData && $this->delImageBySlug($imgData->img_slug, base64_decode(Session::get('userSlug')))) {
-            $this->flash->setFlash('success', 'Picture deleted !', null, false);
-            Toolset::redirect('/profile?page=' . $pageId);
+
+            $directory = UPLOAD_FOLDER . $imgData->img_dir . '/' . $imgData->img_name;
+            if (!file_exists($directory) || !unlink($directory)) {
+                $this->flash->setToast('warning', 'An error occurred while processing your request, please try again or contact an administrator.', 'Error', '/user/dashboard');
+            }
+
+            $this->flash->setToast('info','Picture <strong>'. $imgData->img_slug .'</strong> deleted !', 'Status', '/user/dashboard?page=' . $pageId);
         } else {
-            $this->flash->setFlash('warning', 'An error occurred while processing your request, please try again or contact an administrator.', null, false, '/profile');
+            $this->flash->setToast('warning', 'An error occurred while processing your request, please try again or contact an administrator.', 'Error', '/user/dashboard');
         }
     }
 
