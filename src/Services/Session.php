@@ -15,7 +15,7 @@ class Session
     {
         if (isset($_GET['logout']) && Session::get('isConnected')) {
             foreach ($_SESSION as $key => $value) {
-                if ($key == 'flashMsg') continue;
+                if ($key == 'flashMsg' || $key == 'toastMsg') continue;
                 self::destroy($key);
             }
 
