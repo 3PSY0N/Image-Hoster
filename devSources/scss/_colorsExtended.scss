@@ -1,0 +1,98 @@
+@use "colors";
+
+.b-third {
+  color: colors.$mainLight;
+  background: colors.$thirdColor;
+}
+
+.b-main {
+  color: colors.$mainLight;
+  background: colors.$primary;
+}
+
+.b-blue {
+  color: colors.$mainLight;
+  background: colors.$blue;
+}
+
+.b-indigo {
+  color: colors.$mainLight;
+  background: colors.$indigo;
+}
+
+.b-purple {
+  color: colors.$mainLight;
+  background: colors.$purple;
+}
+
+.b-pink {
+  color: colors.$mainLight;
+  background: colors.$pink;
+}
+
+.b-red {
+  color: colors.$mainLight;
+  background: colors.$red;
+}
+
+.b-orange {
+  color: colors.$mainDark;
+  background: colors.$orange;
+}
+
+.b-yellow {
+  color: colors.$mainDark;
+  background: colors.$yellow;
+}
+
+.b-green {
+  color: colors.$mainLight;
+  background: colors.$green;
+}
+
+.b-teal {
+  color: colors.$mainDark;
+  background: colors.$teal;
+}
+
+.b-cyan {
+  color: colors.$mainLight;
+  background: colors.$cyan;
+}
+
+.b-white {
+  color: colors.$mainDark;
+  background: colors.$white;
+}
+
+.b-gray {
+  color: colors.$mainLight;
+  background: colors.$gray;
+}
+
+.b-gray-dark {
+  color: colors.$mainLight;
+  background: colors.$gray-dark;
+}
+
+.b-light {
+  color: colors.$mainDark;
+  background: colors.$light;
+}
+
+.hr-default {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), colors.$orangy, colors.$pinky, rgba(0, 0, 0, 0));
+}
+
+.btn-gradient {
+  background: linear-gradient(160deg, colors.$orangy,colors.$pinky, colors.$pinky);
+  background-size: 100% 300%;
+  border: 0;
+  &:hover {
+    color: colors.$mainLight;
+  }
+}
+
+.grdt-animate {
+  animation: Gradientizer 20s ease-in-out infinite;
+}

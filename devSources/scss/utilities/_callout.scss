@@ -1,0 +1,121 @@
+@use "../colors";
+
+.callout {
+  position: relative;
+  padding: 1rem 1.5rem;
+  border-left-width: .5rem !important;
+  border-left-style: solid !important;
+  margin: 1rem 0;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  background: #fafafa;
+
+  &.alert {
+    border: inherit;
+  }
+
+  p {
+    font-size: 0.875rem;
+  }
+
+  @each $name, $color, $bg in
+    (main, colors.$primary, #cbcfd1),
+    (mainGray, colors.$mainGray, #e0e0e0),
+    (light, colors.$primary, colors.$mainLight),
+    (primary, colors.$blue, #d5e4f1),
+    (danger, colors.$red, #f4d2ce),
+    (success, colors.$green, #daedda),
+    (secondary, colors.$teal, #cef0e6),
+    (info, colors.$cyan, #daeff5),
+    (warning, colors.$yellow, #f8efd3),
+    (orange, colors.$orangy, #f9e0c2),
+    (pink, colors.$pinky, #f8d5e3),
+    (purple, colors.$purple, #ded5ef),
+  {
+    &.#{$name} {
+      border-color: $color;
+      background-color: $bg;
+
+      & span.title {
+        line-height: 1rem;
+        font-size: 1.1rem;
+        display: block;
+
+        @if ($name != light) {
+          color: $color;
+        }
+      }
+
+      & button.close {
+        margin-left: 5px;
+        &:hover {
+          color: $color !important;
+        }
+      }
+    }
+  }
+}
+
+.toast {
+  min-width: 280px;
+  overflow: hidden;
+  font-size: 1rem;
+  background-color: inherit;
+  box-shadow: none;
+}
+
+.toaster {
+  position: absolute; top: 50px; right: 0; z-index: 5;
+}
+
+@media screen and (min-width: 375px) {
+  .toaster {
+    position: absolute; top: 50px; right: 50px; z-index: 5;
+  }
+}
+
+
+
+
+.tooltipo
+{
+  text-decoration:none;
+  position:relative;
+}
+
+
+.tooltipo span
+{
+  display:none;
+
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  color:black;
+  background:white;
+}
+
+
+.tooltipo span img
+{
+  float:left;
+  margin:0px 8px 8px 0;
+}
+
+
+.tooltipo:hover span
+{
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1000;
+  width:auto;
+  max-width:320px;
+  min-height:128px;
+  border:1px solid black;
+  margin-top:12px;
+  margin-left:32px;
+  overflow:hidden;
+  padding:8px;
+}

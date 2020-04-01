@@ -1,0 +1,74 @@
+@use "colors";
+
+footer {
+  color: colors.$mainLight;
+  background-color: colors.$primary;
+  line-height: 1.5;
+
+  a {
+    text-decoration: none;
+    color: #eee;
+  }
+
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .ft-main {
+    padding: 1.25rem 1.875rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+
+  .ft-main-item {
+    padding: 1.25rem;
+    min-width: 12.5rem;
+    margin: 0 .5rem;
+  }
+
+  .ft-title {
+    color: #fff;
+    font-size: 1.375rem;
+    padding-bottom: 0.625rem;
+  }
+
+  .ft-social {
+    padding: 0 1.875rem 1.25rem;
+  }
+
+  .ft-social-list {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.25rem;
+  }
+
+  .ft-social-list li {
+    margin: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .ft-legal {
+    padding: 0.9375rem 1.875rem;
+  }
+
+  .ft-legal-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ft-legal-list li {
+    margin: 0.125rem 0.625rem;
+    white-space: nowrap;
+  }
+
+  /* one before the last child */
+  .ft-legal-list li:nth-last-child(2) {
+    flex: 1; /* same as flex-grow: 1; */
+  }
+
+}

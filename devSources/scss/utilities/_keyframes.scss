@@ -1,0 +1,23 @@
+@keyframes Gradientizer {
+  0% {
+    background-position: 0 50%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0 50%
+  }
+}
+
+@keyframes bounce-up {
+  58% {
+    transform: translateY(5px);
+  }
+  50%, 65%, 100% {
+    transform: translateY(0px);
+  }
+  63% {
+    transform: translateY(-10px);
+  }
+}
