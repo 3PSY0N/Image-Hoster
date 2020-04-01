@@ -1,0 +1,12 @@
+@use "../colors";
+
+.btn-primary {
+  color: colors.$mainLight;
+  background: colors.$primary;
+  border-color: colors.$primary;
+
+  &:hover, &:focus, &:active {
+    background: colors.$secondary !important;
+    border-color: colors.$secondary;
+  }
+}

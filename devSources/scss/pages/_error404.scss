@@ -1,0 +1,14 @@
+#logo404 {
+  height: 8rem;
+}
+
+#e404 {
+  justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+
+  &.container {
+    padding-top: 4rem !important;
+  }
+}
+

@@ -1,0 +1,98 @@
+@use "../colors";
+
+blockquote {
+  font-size: 1rem;
+  position: relative;
+  padding: 1rem;
+  color: colors.$mainLight;
+  border: none;
+  border-radius: 0.3rem;
+  background: colors.$gray-dark;
+
+  p {
+    margin: 0;
+
+  }
+}
+
+pre {
+  padding: 4px 8px;
+  margin: 0;
+  overflow: auto;
+  border-radius: 0.3em;
+  color: colors.$mainLight;
+  background: colors.$gray-dark;
+}
+
+p {
+  code {
+    padding: 4px;
+    margin: 0;
+    overflow: auto;
+    border-radius: 0.3em;
+    color: colors.$mainLight;
+    background: colors.$gray-dark;
+  }
+}
+
+hr {
+  margin: 0;
+  border: 0;
+  height: 1px;
+}
+
+.paginator {
+  display: flex;
+  justify-content: center;
+
+
+  .pagination {
+
+  }
+
+  .page-link {
+    color: colors.$pinky;
+    border-radius: 5rem;
+    min-width: 38px;
+    text-align: center;
+    margin: 0 2px;
+    border: none;
+
+    &:hover {
+      color: colors.$orangy;
+      background-color: colors.$rgba-orangy;
+    }
+  }
+
+  .page-link:focus {
+    box-shadow: none;
+  }
+
+  .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: colors.$primary;
+    border-radius: 5rem;
+  }
+
+  .page-item.prev .page-link,
+  .page-item.next .page-link, {
+    border-radius: 5rem;
+
+  }
+}
+
+@media screen and (max-width: 768px){
+  .hide-sm {
+    display: none;
+  }
+}
+@media screen and (max-width: 335px){
+  .hide-xs {
+    display: none;
+  }
+}
+
+.hide {
+  display: none;
+}
