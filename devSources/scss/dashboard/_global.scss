@@ -1,4 +1,5 @@
 // Global component styles
+@use "../colors.scss";
 
 html {
   position: relative;
@@ -12,9 +13,18 @@ body {
 }
 
 a {
-  &:focus {
-    outline: none;
+  color: colors.$pinky;
+  transition: all 0.3s;
+
+  &:hover {
+    color: colors.$orangy;
+    text-decoration: none;
   }
+}
+
+::selection {
+  color: white;
+  background: colors.$orangy;
 }
 
 // Main page wrapper
