@@ -32,11 +32,11 @@
                             </div>
                             <div>
                                 <span>Merge link:</span>
-                                <span><a href="{{ lastMergeRequest.web_url }}"></a></span>
+                                <span><a href="{{ lastMergeRequest.web_url }}" target="_blank" rel="noopener"></a></span>
                             </div>
                             <div>
                                 <span>Author:</span>
-                                <a href="{{ lastMergeRequest.author.web_url }}">
+                                <a href="{{ lastMergeRequest.author.web_url }}" target="_blank" rel="noopener">
                                     <img width="20px" src="{{ lastMergeRequest.author.avatar_url}}" alt="{{ lastMergeRequest.author.name }} Avatar">
                                     <span>{{ lastMergeRequest.author.name }}</span>
                                 </a>
@@ -65,12 +65,12 @@
                             <div id="collapse{{ commit.short_id }}" class="collapse {{ loop.first ? 'show' }}" aria-labelledby="heading{{ commit.short_id }}" data-parent="#commitsAccordion">
                                 <div class="card-body">
                                     <ul class="list-unstyled small">
-                                        <li>Author: <a href="https://gitlab.com/{{ commit.author_name }}">{{ commit.committer_name }}</a></li>
+                                        <li>Author: <a href="https://gitlab.com/{{ commit.author_name }}" target="_blank" rel="noopener">{{ commit.committer_name }}</a></li>
                                         <li>Commit message:
                                             <blockquote>{{ commit.message|nl2br }}</blockquote>
                                         </li>
                                         <li>Commit date: <span class="badge badge-light">{{ commit.committed_date|date("m/d/Y - H:i:s", "Europe/Paris") }}</span></li>
-                                        <li>Direct access to <a href="{{ commit.web_url }}">this commit.</a></li>
+                                        <li>Direct access to <a href="{{ commit.web_url }}" target="_blank" rel="noopener">this commit.</a></li>
                                     </ul>
                                 </div>
                             </div>
