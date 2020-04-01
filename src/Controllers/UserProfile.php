@@ -14,7 +14,7 @@ use Siler\Http\Request;
 
 class UserProfile
 {
-    private $maxPerPage = 16;
+    private $maxPerPage = 10;
     /** @var Flash */
     private $flash;
     /** @var ImgHandler */
@@ -61,12 +61,12 @@ class UserProfile
         ];
 
         $routeGenerator = function ($currentPage) {
-            return '/profile?page=' . $currentPage;
+            return '/user/dashboard?page=' . $currentPage;
         };
 
         $pagination = $view->render($pagerfanta, $routeGenerator, $options);
 
-        echo $this->twig->render('profile.twig', [
+        echo $this->twig->render('admin/user/dashboard.twig', [
             'flashMsg'    => $this->flash->getFlash(),
             'imagesList'  => $currentPageResults,
             'profileLink' => Session::get('userName'),
@@ -81,7 +81,7 @@ class UserProfile
     public function logout()
     {
         $msg = new Flash();
-        $msg->setFlash('success', 'You are now logged out, see you soon !', null, false);
+        $msg->setToast('info', 'You are now logged out, see you soon !', 'LogOut');
         Session::checkUserIsConnected();
         Session::logout();
     }
