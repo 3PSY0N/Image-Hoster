@@ -13,10 +13,7 @@
                     </li>
                     {% if isConnected %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/profile">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
+                            <a class="nav-link" href="/user/dashboard">Profile</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -30,6 +27,7 @@
             </div>
         </div>
     </nav>
+    {{ showToast()|raw }}
 </header>
 
 
