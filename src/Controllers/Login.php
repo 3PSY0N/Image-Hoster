@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Twig;
 use App\Handlers\UserHandler;
-use App\Models\UserModel;
 use App\Services\Flash;
 use App\Services\Session;
 use App\Services\Toolset;
@@ -46,7 +45,7 @@ class Login extends Twig
                         Session::setConnected(true);
                         Session::setAdmin($user->usr_admin);
                         Session::set('userSlug', Toolset::b64encode($user->usr_slug));
-                        $msg->setFlash('success', 'Login success !', null,  false, '/profile');
+                        $msg->setToast('success', 'Login success !', 'Login', '/user/dashboard');
                     } else {
                         $msg->setFlash('warning', 'Please activate your account before login in.', null,false, '/login');
                     }
