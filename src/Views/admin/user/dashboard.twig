@@ -1,0 +1,88 @@
+{% extends 'admin/base-admin.twig' %}
+
+{% block javascript %}
+<script defer src = "{{ asset('/js/modal.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        {% include 'admin/user/bodyparts/sidebar.twig' %}
+        <div id="content-wrapper">
+            {% include 'admin/user/bodyparts/topbar.twig' %}
+            {{ flashMsg|raw }}
+
+            <div class="container-fluid" id="picturesContainer">
+                <div class="row" id="profile">
+                    <div class="col-12">
+                        {% if imagesList %}
+                            <div class="col-12">
+                                <article class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h3 class="m-0 font-weight-bold text-dark">My Uploads</h3>
+                                    </div>
+                                    <table class="table table-striped table-borderless">
+                                        <thead class="b-third">
+                                            <tr>
+                                                <th scope="col">Thumb</th>
+                                                <th scope="col" class="hide-sm">File Size</th>
+                                                <th scope="col" class="hide-sm">Dimensions</th>
+                                                <th scope="col" class="hide-sm">Upload Date</th>
+                                                <th scope="col">Link</th>
+                                                <th scope="col">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="card-body">
+
+                                        {% for image in imagesList %}
+                                            {% set imgDim = getImgDimensions(image.img_dir, image.img_name).0  ~ 'x' ~ getImgDimensions(image.img_dir, image.img_name).1 %}
+                                            <tr id="post_{{ image.img_id }}">
+                                                <td>
+                                                    <a href="{{ imgLink(image.img_slug) }}" target="_blank" rel="noopener">
+                                                        <img src="{{ imgLink(image.img_slug) }}" data-large="{{ imgLink(image.img_slug) }}" data-info="Dim: {{ imgDim }} - Size {{ bytePrefix(image.img_size) }}"/>
+                                                    </a>
+                                                </td>
+                                                <td class="hide-sm">{{ bytePrefix(image.img_size) }}</td>
+                                                <td class="hide-sm">{{ imgDim }}</td>
+                                                <td class="hide-sm">{{ image.img_date }}</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input readonly class="form-control hide-xs" type="text" value="{{ imgLink(image.img_slug) }}">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-primary" type="button">COPY</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><a class="btn btn-outline-danger" href="/di?page={{ currentPage }}&img={{ image.img_slug }}">Delete</a></td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </article>
+                            </div>
+
+                            <div class="paginator">
+                                {{ pagination|raw }}
+                            </div>
+
+                            <div id="imgOverlay" class="modal">
+                                <div>
+                                    <img id="img" class="modal-img" src="" alt=""/>
+                                </div>
+                                <div class="caption">
+                                    <p id="title"></p>
+                                    <a href="" class="btn btn-gradient" id="picture" target="_blank" rel="noopener">Direct access</a>
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <h2>No uploads yet.</h2>
+                            <p>Upload your first picture <a href="/">Here</a> !</p>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
