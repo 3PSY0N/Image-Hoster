@@ -1,0 +1,86 @@
+<ul class="navbar-nav b-main sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-logo">
+            <img src="{{ asset('/img/logo.svg') }}" alt="logo">
+        </div>
+        <div class="sidebar-brand-text mx-3">ImageHoster</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item">
+        <a class="nav-link" href="/">
+            <i class="fas fa-external-link-alt"></i>
+            <span>View site</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item">
+        <a class="nav-link" href="/user/dashboard">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item active">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <i class="fas fa-user-cog"></i>
+            <span>Profile</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html"><i class="fas fa-user"></i> View</a>
+                <a class="collapse-item" href="cards.html"><i class="fas fa-user-edit"></i> Edit</a>
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="nav-item">
+        <a data-toggle="modal" data-target="#logoutModal" class="nav-link" href="/user/dashboard">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <div class="my-2"></div>
+
+    <div class="copyright text-center small">
+        <span class="d-block">©ImageHoster</span>
+        <span>2020 - {{ releaseVersion }}</span>
+        <span id="dev">
+            <a href="/gitstatus">
+                <img src="/assets/img/gitlab-white.svg" width="32px">Dev Status
+            </a>
+        </span>
+    </div>
+</ul>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
