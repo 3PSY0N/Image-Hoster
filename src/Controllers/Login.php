@@ -55,4 +55,12 @@ class Login extends Twig
             }
         }
     }
+
+    public function logout()
+    {
+        $msg = new Flash();
+        $msg->setToast('info', 'You are now logged out, see you soon !', 'LogOut');
+        Session::checkUserIsConnected();
+        Session::logout();
+    }
 }
