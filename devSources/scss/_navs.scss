@@ -1,0 +1,46 @@
+@use "colors";
+
+.navbar {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  left: 0;
+  border-radius: 0;
+  color: colors.$mainLight;
+  padding: 0;
+
+  .logo {
+    max-width: 150px;
+    margin-left: 15px;
+  }
+
+  #logo-brand img {
+    height: 2.5rem;
+  }
+
+  .navbar-toggler {
+    color: colors.$mainLight;
+  }
+
+  & li {
+    padding: 1rem 0.5rem;
+
+    .nav-link {
+      transition: all 0.2s ease-in-out;
+      line-height: .8em;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+
+      &:hover {
+        color: colors.$mainLight !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .navbar .container {
+    justify-content: space-around;
+  }
+}

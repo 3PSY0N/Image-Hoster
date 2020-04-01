@@ -1,0 +1,84 @@
+@use "colors";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::selection {
+  color: white;
+  background: colors.$orangy;
+}
+
+input:required:valid {
+  border-width: 1px;
+  border-color: colors.$primary;
+}
+
+body, html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  background: colors.$mainLight;
+  color: colors.$mainDark;
+}
+
+main {
+  margin: 0 auto;
+  flex: 1;
+  &.container {
+    padding-top: 6rem !important;
+  }
+}
+
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+a {
+  color: colors.$pinky;
+  transition: all 0.3s;
+
+  &:hover {
+    color: colors.$orangy;
+    text-decoration: none;
+  }
+}
+
+hr {
+  margin: 0;
+  border: 0;
+  height: 1px;
+
+  &.hr-light {
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0), colors.$mainLight, rgba(0, 0, 0, 0));
+  }
+}
+
+.jumbotron {
+  border-radius: 2rem !important;
+}
+
+.img-container img {
+  max-width: 500px;
+}
+
+
+#nav-upload-title {
+	position: inherit;
+}
+
+@media screen and (min-width: 768px) {
+	#nav-upload-title {
+		position: absolute;
+		font-weight: bold;
+		animation: bounce-up 5s infinite;
+	}
+}

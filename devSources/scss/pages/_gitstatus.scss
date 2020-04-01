@@ -1,0 +1,34 @@
+@use "../colors";
+#commits {
+  .btn-link {
+    color: colors.$pinky;
+    transition: all 0.3s;
+    text-decoration: none;
+    &:hover, &:focus {
+      color: colors.$orangy;
+      text-decoration: none;
+    }
+  }
+
+  blockquote {
+    font-size: inherit;
+  }
+
+  li {
+    margin: .5rem;
+  }
+}
+
+#lastMergeRequest {
+  span:nth-child(odd) {
+    font-weight: bold;
+  }
+}
+
+.headGit {
+  margin-bottom: 2rem;
+  h2 {
+    margin: 0;
+    line-height: 1rem;
+  }
+}
