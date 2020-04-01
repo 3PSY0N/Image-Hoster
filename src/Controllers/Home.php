@@ -56,8 +56,6 @@ class Home
      */
     public function upload()
     {
-        $tokenSize = 6;
-
         if (isset($_POST['submit'])) {
             $file        = $_FILES['inputFile'];
             $fileName    = $file['name'];
@@ -66,13 +64,15 @@ class Home
             $fileError   = $file['error'];
             $user        = $this->userHandler->getUserBySlug(Toolset::b64decode(Session::get('userSlug')));
             $usrUid      = $user ? $user->usr_id : null;
+            $fileExt     = $this->imgHandler->getFileExt($fileName);
 
-            $fileExt         = $this->imgHandler->getFileExt($fileName);
-            $fileNameSlug    = $this->imgHandler->setNewToken($tokenSize);
-            $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
-            $directoryName   = date("Y") . '-' . date("m");
-            $directoryPath   = UPLOAD_FOLDER . $directoryName;
-            $fileDestination = $directoryPath . '/' . $fileNameNew;
+            if ($fileSize !== 0) {
+                $fileNameSlug    = $this->imgHandler->checkAndSetNewSlug(TOKEN_SIZE);
+                $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
+                $directoryName   = date("Y") . '-' . date("m");
+                $directoryPath   = UPLOAD_FOLDER . $directoryName;
+                $fileDestination = $directoryPath . '/' . $fileNameNew;
+            }
 
             $this->imgHandler->checkEmptyFile($fileSize);
             $this->imgHandler->checkFileError($fileError);
@@ -82,11 +82,6 @@ class Home
 
             if (mime_content_type($fileTmpName) === "image/jpeg") {
                 $this->imgHandler->correctImageOrientation($fileTmpName);
-            }
-
-            if ($this->imgHandler->getImageBySlugModel($fileNameSlug)) {
-                $fileNameSlug = $this->imgHandler->setNewToken(strlen($fileNameSlug) + 2);
-                $fileNameNew  = $fileNameSlug . time() . '.' . $fileExt;
             }
 
             $this->imgHandler->uploadFile($directoryName, $fileNameNew, $fileNameSlug, $fileSize, $usrUid, $fileTmpName, $fileDestination, $fileName);

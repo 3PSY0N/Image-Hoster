@@ -35,13 +35,18 @@ class ImageApi
                 $fileTmpName     = $file['tmp_name'];
                 $fileSize        = $file['size'];
                 $fileError       = $file['error'];
-                $fileExt         = $this->imgHandler->getFileExt($fileName);
-                $fileNameSlug    = $this->imgHandler->setNewToken(6);
-                $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
-                $directoryName   = date("Y") . '-' . date("m");
-                $directoryPath   = UPLOAD_FOLDER . $directoryName;
-                $fileDestination = $directoryPath . '/' . $fileNameNew;
+                $fileExt     = $this->imgHandler->getFileExt($fileName);
+
+                if ($fileSize !== 0) {
+                    $fileNameSlug    = $this->imgHandler->checkAndSetNewSlug(TOKEN_SIZE);
+                    $fileNameNew     = $fileNameSlug . time() . '.' . $fileExt;
+                    $directoryName   = date("Y") . '-' . date("m");
+                    $directoryPath   = UPLOAD_FOLDER . $directoryName;
+                    $fileDestination = $directoryPath . '/' . $fileNameNew;
+                }
+
                 $this->imgHandler->setUploadsDirectory($directoryPath);
+
                 $error = false;
 
                 if ($fileSize === 0) {
