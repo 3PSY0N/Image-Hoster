@@ -3,6 +3,8 @@
 namespace App\Core;
 
 use App\Handlers\ImgHandler;
+use App\Services\Flash;
+use App\Services\Toolset;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -35,10 +37,17 @@ class Twig
             return sprintf('/assets/%s', ltrim($asset, '/'));
         }));
         $twig->addFunction(new TwigFunction('imgLink', function ($link) {
-            return sprintf('/si/%s', ltrim($link, '/'));
+            return sprintf(Toolset::siteUrl() . '/si/%s', ltrim($link, '/'));
         }));
         $twig->addFunction(new TwigFunction('bytePrefix', function ($size) {
             return (new ImgHandler())->bytePrefix($size);
+        }));
+        $twig->addFunction(new TwigFunction('showToast', function () {
+            $flash = new Flash();
+            return $flash->getToast();
+        }));
+        $twig->addFunction(new TwigFunction('getImgDimensions', function ($imgDir, $imgName) {
+            return ImgHandler::getImgDimensions($imgDir, $imgName);
         }));
 
         $twig->addGlobal('releaseVersion', GITLAB_PROJECT_VERSION);
