@@ -64,15 +64,11 @@ class Toolset
      */
     public static function siteUrl()
     {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-            $link = "https";
-        } else {
-            $link = "http";
-        }
-        $link .= "://";
-        $link .= $_SERVER['HTTP_HOST'];
+    $link = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $link .= "://";
+    $link .= $_SERVER['HTTP_HOST'];
 
-        return $link;
+    return $link;
     }
 
     /**
