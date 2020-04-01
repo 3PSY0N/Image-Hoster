@@ -5,8 +5,6 @@ namespace App\Services;
 class Flash
 {
 
-    private $redirectUrl;
-
     /**
      * @return string|null
      */
@@ -67,8 +65,49 @@ class Flash
         }
     }
 
+    public function getToast()
+    {
+        if (Session::get('toastMsg')) {
+
+            $toastMsg = '<div class="toaster">';
+
+            foreach (Session::get('toastMsg') as $toast) {
+                $toastMsg .= '<div role="alert" aria-live="assertive" aria-atomic="true" class="toast callout ml-auto ' . $toast['color'] . '" data-delay="5000" data-autohide="true">';
+                if ($toast['title']) {
+                    $toastMsg .= '<span class="title">' . $toast['title'] . '</span>';
+                }
+                $toastMsg .= $toast['message'];
+                $toastMsg .= '</div>';
+            }
+            $toastMsg .= '</div>';
+            return $toastMsg;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $color
+     * @param $message
+     * @param null $title
+     * @param null $redirectUrl
+     */
+    public function setToast($color, $message, $title = null, $redirectUrl = null)
+    {
+        static $no_calls = 0;
+        ++$no_calls;
+        $_SESSION['toastMsg'][$no_calls]['color']     = $color;
+        $_SESSION['toastMsg'][$no_calls]['title']     = $title;
+        $_SESSION['toastMsg'][$no_calls]['message']   = $message;
+
+        if (!is_null($redirectUrl)) {
+            Toolset::redirect($redirectUrl);
+        }
+    }
+
     public function clear()
     {
         Session::destroy('flashMsg');
+        Session::destroy('toastMsg');
     }
 }
