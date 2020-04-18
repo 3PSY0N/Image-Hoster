@@ -11,8 +11,8 @@ function controller(string $className, string $method): \Closure
     };
 }
 // Image
-Route\get('/si/([a-zA-Z0-9-+_~$]+)', controller('App\Controllers\Image', 'show'));
-Route\get('/di([\?]page=[0-9]+)?/?([\&]img=[a-zA-Z0-9-+_~$]+)', controller('App\Controllers\Image', 'delete'));
+Route\get(SHOW_IMG_ROUTE . '[a-zA-Z0-9-_+~$]+(\?.*)?', controller('App\Controllers\Image', 'show'));
+Route\get('/di([\?]page=[0-9]+)?/?([\&]img=[a-zA-Z0-9-+_~$]+)', controller('App\Handlers\ImgHandler', 'deleteImg'));
 Route\post('/pi/', controller('App\Api\ImageApi', 'postImage'));
 // Public
 Route\get('/', controller('App\Controllers\Home', 'displayHome'));
@@ -22,14 +22,17 @@ Route\get('/gitstatus', controller('App\Controllers\GitStatus', 'showCommits'));
 Route\get('/register', controller('App\Controllers\Register', 'getRegister'));
 Route\post('/register', controller('App\Controllers\Register', 'postRegister'));
 Route\get('/register?([\?]token=[a-zA-Z0-9]+)?', controller('App\Controllers\Register', 'checkRegistration'));
-
 Route\get('/login', controller('App\Controllers\Login', 'getLogin'));
 Route\post('/login', controller('App\Controllers\Login', 'postLogin'));
-Route\get('/logout', controller('App\Controllers\UserProfile', 'logout'));
+Route\get('/logout', controller('App\Controllers\Login', 'logout'));
 // Private
-Route\get('/user/dashboard?([\?]page=[0-9]+)?', controller('App\Controllers\UserProfile', 'displayUserProfile'));
+Route\get('/user/dashboard', controller('App\Controllers\Gallery', 'displayGallery'));
+Route\get('/user/gallery?([\?]page=[0-9]+)?', controller('App\Controllers\Gallery', 'displayGallery'));
+Route\any('/user/profile', controller('App\Controllers\UserProfile', 'displayUserProfile'));
+Route\get('/user/profile/delete', controller('App\Controllers\UserProfile', 'deleteUser'));
+
 // Admin
-Route\get('/admin/purge', controller('App\Handlers\ImgHandler', 'purge'));
+
 // Errors
 Route\get('.*', function () {
     (new Errors())->e404();
