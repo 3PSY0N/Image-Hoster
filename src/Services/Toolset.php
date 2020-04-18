@@ -84,4 +84,17 @@ class Toolset
         }
         return date('Y-m-d H:i:s', time() + $time);
     }
+
+    /**
+     * @param string $directoryPath
+     * @return bool
+     */
+    public static function makeDirectoryIfNotExist(string $directoryPath): bool
+    {
+        if (!is_dir($directoryPath)) {
+            return mkdir($directoryPath, 755, true);
+        }
+
+        return false;
+    }
 }
