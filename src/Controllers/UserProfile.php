@@ -6,29 +6,20 @@ use App\Core\Twig;
 use App\Handlers\ImgHandler;
 use App\Handlers\UserHandler;
 use App\Services\Flash;
+use App\Services\Logs;
 use App\Services\Session;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Pagerfanta;
-use App\Services\PagerView;
-use Siler\Http\Request;
+use App\Services\Toolset;
 
 class UserProfile
 {
-    private $maxPerPage = 10;
-    /** @var Flash */
-    private $flash;
-    /** @var ImgHandler */
-    private $imgHandler;
-    /** @var UserHandler */
-    private $userHandler;
-    /** @var Twig */
     private $twig;
+    private $userHandler;
+    private $flash;
 
     public function __construct()
     {
         $this->twig        = new Twig();
         $this->flash       = new Flash();
-        $this->imgHandler  = new ImgHandler();
         $this->userHandler = new UserHandler();
     }
 
@@ -40,49 +31,74 @@ class UserProfile
     public function displayUserProfile()
     {
         Session::checkUserIsConnected();
-        $getImageList = $this->imgHandler->getImagesFromUserModel(base64_decode(Session::get('userSlug')));
-        $view       = new PagerView();
-        $adapter    = new ArrayAdapter($getImageList);
-        $pagerfanta = new Pagerfanta($adapter);
 
-        $getPage     = (int)Request\get('page');
-        $currentPage = $getPage ? $getPage : 1;
+        $user = $this->userHandler->getUserBySlug(Toolset::b64decode(Session::get('userSlug')));
 
-        $pagerfanta->setNormalizeOutOfRangePages(true)
-                   ->setMaxPerPage($this->maxPerPage)
-                   ->setCurrentPage($currentPage);
+        if (isset($_POST['editMailBtn'])) {
+            $this->editUserEmail();
+        }
 
-        $currentPageResults = $pagerfanta->getCurrentPageResults();
+        if (isset($_POST['btnEditPswd'])) {
+            $inputOldPassword  = $_POST['inputOPassword'];
+            $inputPassword  = $_POST['inputPassword'];
+            $inputRPassword = $_POST['inputRPassword'];
 
-        $options = [
-            'proximity'    => 1,
-            'prev_message' => '<i class="fas fa-chevron-left"></i>',
-            'next_message' => '<i class="fas fa-chevron-right"></i>',
-        ];
+            $validateCurrentPassword = $this->userHandler->passwordVerify($inputOldPassword, $user->usr_pswd);
+            $validatePswds           = $this->userHandler->validatePassword($inputPassword, $inputRPassword);
+            $validatePswdLength      = $this->userHandler->validatePasswordLength($inputPassword);
 
-        $routeGenerator = function ($currentPage) {
-            return '/user/dashboard?page=' . $currentPage;
-        };
+            if ($validateCurrentPassword && $validatePswds && $validatePswdLength) {
+                $newPasswordHash = $this->userHandler->hashPassword($inputPassword);
 
-        $pagination = $view->render($pagerfanta, $routeGenerator, $options);
+                $this->userHandler->setNewPassword($user->usr_email, $newPasswordHash);
 
-        echo $this->twig->render('admin/user/dashboard.twig', [
-            'flashMsg'    => $this->flash->getFlash(),
-            'imagesList'  => $currentPageResults,
-            'profileLink' => Session::get('userName'),
-            'isConnected' => Session::get('isConnected'),
-            'pagination'  => $pagination,
-            'currentPage' => $currentPage
+                Logs::createLog($user->usr_email . ' changed his/her password.', Logs::INFO);
+                $this->flash->setFlash('success', 'Password Changed', 'Profile', true, '/user/profile');
+            }
+        }
+
+        echo $this->twig->render('admin/user/profile.twig', [
+            'flashMsg' => $this->flash->getFlash(),
+            'user'     => $user
         ]);
 
         $this->flash->clear();
     }
 
-    public function logout()
+    public function editUserEmail()
     {
-        $msg = new Flash();
-        $msg->setToast('info', 'You are now logged out, see you soon !', 'LogOut');
         Session::checkUserIsConnected();
+        $userSlug = Toolset::b64decode(Session::get('userSlug'));
+        $user = $this->userHandler->getUserBySlug($userSlug);
+
+        $newEmail = trim($_POST['inputEmail']);
+
+        if ($newEmail !== $user->usr_email) {
+
+            $validateEmail = $this->userHandler->validateEmail($newEmail);
+            $checkExistEmail = $this->userHandler->emailExist($newEmail);
+
+            if ($validateEmail && $checkExistEmail) {
+                $this->userHandler->setNewEmail($newEmail, $user->usr_email);
+
+                Logs::createLog($user->usr_email . ' changed his/her email for ' . $newEmail, Logs::INFO);
+                $this->flash->setFlash('success', 'Email Changed', 'Profile', true, '/user/profile');
+            }
+        }
+    }
+
+    public function deleteUser()
+    {
+        Session::checkUserIsConnected();
+        $imgHandler = new ImgHandler();
+        $userSlug   = base64_decode(Session::get('userSlug'));
+
+        $imgHandler->deleteAllImagesFromUser($userSlug);
+        $this->userHandler->deleteUser($userSlug);
+
+        Logs::createLog($userSlug . ' deleted his/her account.', Logs::DEL);
+        $this->flash->setFlash('info', 'Your account, and pictures has been deleted successfully. See you soon.', 'Account suppression');
+
         Session::logout();
     }
 }

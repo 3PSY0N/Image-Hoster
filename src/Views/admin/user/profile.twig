@@ -1,0 +1,121 @@
+{% extends 'admin/base-admin.twig' %}
+
+{% block javascript %}
+<script defer src="{{ asset('js/profile.min.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        {% include 'admin/user/bodyparts/sidebar.twig' %}
+        <div id="content-wrapper">
+            {% include 'admin/user/bodyparts/topbar.twig' %}
+
+
+            <div class="container-fluid">
+
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Profile</h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 offset-lg-4">{{ flashMsg|raw }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 offset-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                My Email
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <label for="currEmailField" id="currEmail">Current Email</label>
+                                        <input id="currEmailField" type="email" class="form-control lock" name="inputEmail" value="{{ user.usr_email }}" required>
+                                    </div>
+
+                                    <div id="hiddenEmailBtn">
+                                        <button type="submit" id="saveinfo" class="btn btn-block btn-outline-success" name="editMailBtn">Save</button>
+                                    </div>
+                                    <button type="button" id="btnEditEmail" class="btn btn-block btn-outline-primary rounded">Edit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                My Password
+                            </div>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <div class="form-group">
+                                        <label for="currPswdField" id="currPswd">My Password</label>
+                                        <input id="currPswdField" type="password" class="form-control lock" name="inputOPassword" placeholder="**********">
+                                    </div>
+
+                                    <div id="hiddenPswdBtn">
+                                        <div class="form-group">
+                                            <label for="currPswdField" id="currPswd">New Password</label>
+                                            <input  type="password" class="form-control lock" name="inputPassword" placeholder="**********">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Retype New Password</label>
+                                            <input type="password" class="form-control lock" name="inputRPassword" placeholder="**********">
+                                        </div>
+                                        <button type="submit" id="saveinfo" class="btn btn-block btn-outline-success" name="btnEditPswd">Save</button>
+                                    </div>
+                                    <button type="button" id="btnEditPswd" class="btn btn-block btn-outline-primary rounded">Edit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                My account
+                            </div>
+                            <div class="card-body">
+                                <form action="">
+                                    <hr class="my-3">
+                                    <a href="#" data-toggle="modal" data-target="#delAccountModal" class="btn btn-block btn-outline-danger">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Delete my account</span>
+                                    </a>
+                                    <p class="mt-2 small text-center" id="delAccount">
+                                    The deletion of your account will result in the loss of all your data and all your informations!
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal fade" id="delAccountModal" tabindex="-1" role="dialog" aria-labelledby="delAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="delAccountModalLabel">Are you sure?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>The deletion of your account will result in the loss of all your data and all your informations !</p>
+                        <p>This action concern: </p>
+                        <ul>
+                            <li>Your account and your personal data.</li>
+                            <li>Your uploaded pictures.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger" href="/user/profile/delete">Delete anyways</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

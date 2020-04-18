@@ -58,14 +58,31 @@ class UserHandler extends UserModel
     }
 
     /**
-     * @param $inputPassword
-     * @param $inputRPassword
+     * @param string $inputPassword
+     * @param string $inputRPassword
      * @return bool
      */
-    public function validatePassword($inputPassword, $inputRPassword)
+    public function validatePassword(string $inputPassword, string $inputRPassword): bool
     {
         if (empty($inputPassword) || empty($inputRPassword) || $inputPassword !== $inputRPassword) {
-            $this->flash->setFlash('warning', 'Passwords does not match or are empty.');
+            $this->flash->setFlash('warning', 'New passwords do not match.');
+
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * @param string $inputPassword
+     * @param string $currentPassword
+     * @return bool
+     */
+    public function passwordVerify(string $inputPassword, string $currentPassword): bool
+    {
+        if (!password_verify($inputPassword, $currentPassword)) {
+
+            $this->flash->setFlash('warning', 'Password do not match with the current or is empty.');
 
             return false;
         } else {
@@ -154,6 +171,16 @@ class UserHandler extends UserModel
         return $this->registerNewUserModel($userSlug, $email, $password, $userToken);
     }
 
+    public function setNewEmail(string $newEmail, string $oldEmail)
+    {
+        return $this->setNewEmailModel($newEmail, $oldEmail);
+    }
+
+    public function setNewPassword(string $email, string $pswdHash)
+    {
+        return $this->setNewPasswordModel($email, $pswdHash);
+    }
+
     /**
      * @param string $email
      * @return mixed
@@ -166,5 +193,10 @@ class UserHandler extends UserModel
     public function purgeExpiredAccounts()
     {
         return $this->purgeExpiredAccountsModel();
+    }
+
+    public function deleteUser(string $userSlug)
+    {
+        return $this->deleteUserModel($userSlug);
     }
 }
