@@ -39,25 +39,6 @@ class ImgModel
         ]);
     }
 
-    public function purgeImgBySlug(string $imgSlug)
-    {
-        return Database::getPDO()->IUD("
-            DELETE img.*
-            FROM imgup_imgdata img
-            WHERE img.img_slug = :img_slug
-        ", [
-            ':img_slug'  => $imgSlug,
-        ]);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAllImagesListModel()
-    {
-        return Database::getPDO()->fetchAll("SELECT * FROM imgup_imgdata");
-    }
-
     /**
      * @param string $usrSlug
      * @return mixed
