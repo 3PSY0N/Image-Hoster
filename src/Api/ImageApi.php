@@ -4,6 +4,8 @@ namespace App\Api;
 
 use App\Handlers\UserHandler;
 use App\Handlers\ImgHandler;
+use App\Services\Logs;
+use App\Services\Toolset;
 
 class ImageApi
 {
@@ -35,7 +37,7 @@ class ImageApi
                 $fileTmpName     = $file['tmp_name'];
                 $fileSize        = $file['size'];
                 $fileError       = $file['error'];
-                $fileExt     = $this->imgHandler->getFileExt($fileName);
+                $fileExt         = $this->imgHandler->getFileExt($fileName);
 
                 if ($fileSize !== 0) {
                     $fileNameSlug    = $this->imgHandler->checkAndSetNewSlug(TOKEN_SIZE);
@@ -45,7 +47,7 @@ class ImageApi
                     $fileDestination = $directoryPath . '/' . $fileNameNew;
                 }
 
-                $this->imgHandler->setUploadsDirectory($directoryPath);
+                Toolset::makeDirectoryIfNotExist($directoryPath);
 
                 $error = false;
 
@@ -72,6 +74,8 @@ class ImageApi
 
                 if (!$error) {
                     $this->imgHandler->storeImgInDb($directoryName, $fileNameNew, $fileNameSlug, $fileSize, $userId);
+                    Logs::createLog($fileNameNew . ' was uploaded.', Logs::INFO);
+
                     $jsonData['url'] = $fileNameSlug;
                     echo json_encode($jsonData);
                 }

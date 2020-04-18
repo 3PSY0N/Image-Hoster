@@ -6,6 +6,7 @@ use App\Core\Twig;
 use App\Handlers\MailerHandler;
 use App\Handlers\UserHandler;
 use App\Services\Flash;
+use App\Services\Logs;
 use App\Services\Session;
 use App\Services\Toolset;
 
@@ -32,9 +33,7 @@ class Register
      */
     public function getRegister()
     {
-        if (Session::isConnected()) {
-            Toolset::redirect('/');
-        }
+        if (Session::isConnected()) { Toolset::redirect('/'); }
 
         echo $this->twig->render('register.twig', [
             'isConnected' => Session::get('isConnected')
@@ -70,6 +69,8 @@ class Register
 
             if ($this->userHandler->registerUser($newUserSlug, $inputEmail, $pswdHash, $userRegToken)) {
                 $mailer->registrationMail($inputEmail, $userRegToken);
+
+                Logs::createLog('Registration for ' . $newUserSlug, Logs::INFO);
                 $this->flash->setFlash('success', 'Account created', null, false, '/login');
             }
         }

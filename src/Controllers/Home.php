@@ -6,6 +6,7 @@ use App\Core\Twig;
 use App\Handlers\UserHandler;
 use App\Services\Flash;
 use App\Handlers\ImgHandler;
+use App\Services\Logs;
 use App\Services\Session;
 use App\Services\Toolset;
 use Exception;
@@ -78,11 +79,12 @@ class Home
             $this->imgHandler->checkFileError($fileError);
             $this->imgHandler->checkFileExtMime($fileName, $fileTmpName);
             $this->imgHandler->checkAllowedFileSize($fileSize);
-            $this->imgHandler->setUploadsDirectory($directoryPath);
+            Toolset::makeDirectoryIfNotExist($directoryPath);
 
             if (mime_content_type($fileTmpName) === "image/jpeg") {
                 $this->imgHandler->correctImageOrientation($fileTmpName);
             }
+            Logs::createLog($fileNameNew . ' was uploaded.', Logs::INFO);
 
             $this->imgHandler->uploadFile($directoryName, $fileNameNew, $fileNameSlug, $fileSize, $usrUid, $fileTmpName, $fileDestination, $fileName);
         }

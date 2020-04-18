@@ -45,7 +45,7 @@ class Mailer
             $mail->Body    = $twig->render('/mails/' . $params['template'] . '.twig', $twigParams);
 
             $mail->send();
-            $flash->setFlash('info', "Email has been sent to<br>{$destination}<br>Please verify your email address.", null, true);
+            $flash->setFlash('info', "Email has been sent to<br><b>{$destination}</b><br>Please verify your email address.", null, true);
         } catch (Exception $e) {
             $flash->setFlash('danger', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}", null, false);
         }

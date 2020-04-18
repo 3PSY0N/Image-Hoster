@@ -4,6 +4,7 @@ namespace App\Handlers;
 
 use App\Models\ImgModel;
 use App\Services\Flash;
+use App\Services\Logs;
 use App\Services\Session;
 use App\Services\Toolset;
 use Exception;
@@ -67,19 +68,6 @@ class ImgHandler extends ImgModel
     }
 
     /**
-     * @param string $directoryPath
-     * @return bool
-     */
-    public function setUploadsDirectory(string $directoryPath)
-    {
-        if (!is_dir($directoryPath)) {
-            return mkdir($directoryPath, 755, true);
-        }
-
-        return false;
-    }
-
-    /**
      * @param $fileSize
      */
     public function checkEmptyFile($fileSize): void
@@ -98,7 +86,6 @@ class ImgHandler extends ImgModel
             $this->flash->setFlash('warning', 'Error during file upload, try again or contact an Administrator.', null, false, '/');
         }
     }
-
 
     /**
      * @param $fileName
@@ -227,7 +214,7 @@ class ImgHandler extends ImgModel
         $newSlug = $this->setNewToken($chars);
 
         if ($this->getImageBySlugModel($newSlug)) {
-            error_log("Duplicate token entry" . $newSlug, 0);
+            Logs::createLog('Duplicate token entry' . $newSlug, Logs::WARN);
             $newSlug = $this->checkAndSetNewSlug(strlen($newSlug) + 1);
         }
 
@@ -282,6 +269,7 @@ class ImgHandler extends ImgModel
      */
     public function deleteImg(array $slug): void
     {
+        Session::checkUserIsConnected();
         $pageId  = (int)Toolset::explodeUrlParam($slug[1]);
         $imgSlug = Toolset::explodeUrlParam($slug[2]);
         $imgData   = $this->getImageBySlug($imgSlug);
@@ -292,28 +280,24 @@ class ImgHandler extends ImgModel
             if (!file_exists($directory) || !unlink($directory)) {
                 $this->flash->setToast('warning', 'An error occurred while processing your request, please try again or contact an administrator.', 'Error', '/user/dashboard');
             }
+            Logs::createLog($imgData->img_name . ' was deleted.', Logs::INFO);
 
-            $this->flash->setToast('info','Picture <strong>'. $imgData->img_slug .'</strong> deleted !', 'Status', '/user/dashboard?page=' . $pageId);
+            $this->flash->setToast('info','Picture <strong>'. $imgData->img_slug .'</strong> deleted !', 'Status', '/user/gallery?page=' . $pageId);
         } else {
             $this->flash->setToast('warning', 'An error occurred while processing your request, please try again or contact an administrator.', 'Error', '/user/dashboard');
         }
     }
 
     /**
-     * @return bool
+     * @param string $userSlug
      */
-    public function purge()
+    public function deleteAllImagesFromUser(string $userSlug)
     {
-        $imgData = $this->getAllImagesListModel();
+        $images = $this->getImagesFromUserModel($userSlug);
 
-        foreach ($imgData as $img) {
-            $directory = UPLOAD_FOLDER . $img->img_dir . '/' . $img->img_name;
-
-            if (!file_exists($directory)) {
-                $this->purgeImgBySlug($img->img_slug);
-            }
+        foreach ($images as $image) {
+            $file = UPLOAD_FOLDER . $image->img_dir . '/' . $image->img_name;
+            unlink($file);
         }
-        return true;
     }
-
 }
