@@ -3,7 +3,7 @@ _assetsVendor
 prepros.config
 /vendor
 /uploads
-/devAssets
 /cache
+/logs
 /src/Core/config.php
 /src/Core/setupdb.json
